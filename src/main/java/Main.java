@@ -1,16 +1,27 @@
 import java.sql.*;
+
 class Main {
-   public static void main(String args[]){
-      try{
-         Class.forName("com.mysql.jdbc.Driver");
-         Connection con=DriverManager.getConnection(
-                 "jdbc:mysql://localhost:3306","root","admin");
-         //here sonoo is database name, root is username and password
-         Statement stmt=con.createStatement();
-         ResultSet rs=stmt.executeQuery("select * from emp");
-         while(rs.next())
-            System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
-         con.close();
-      }catch(Exception e){ System.out.println(e);}
+   public static void main(String args[]) {
+      try {
+         Class.forName("com.mysql.cj.jdbc.Driver");
+         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306", "root", "admin");
+
+         DatabaseMetaData metadata = connection.getMetaData();
+         ResultSet rs = metadata.getCatalogs();
+
+         while (rs.next()) {
+            String dbName = rs.getString("TABLE_CAT");
+            System.out.println(dbName);
+            Connection dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root",
+                                                                  "admin");
+            ResultSet resultSet = dbConnection.getMetaData()
+                                              .getTables(null, null, "%", null);
+            while (resultSet.next()) {
+               System.out.println(resultSet.getString("TABLE_NAME"));
+            }
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
    }
 }  
