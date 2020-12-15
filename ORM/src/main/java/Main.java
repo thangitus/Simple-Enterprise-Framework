@@ -5,7 +5,7 @@ class Main {
       try {
          Class.forName("com.mysql.cj.jdbc.Driver");
          Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hibernateexercise", "root",
-                                                             "admin");
+                                                             "admin123");
 
          DatabaseMetaData metadata = connection.getMetaData();
          ResultSet resultSet = metadata.getTables(connection.getCatalog(), null, "%", null);
