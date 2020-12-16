@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+      prefWidth="1920.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/15.0.1"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <AnchorPane prefHeight="42.0" prefWidth="600.0" style="-fx-background-color: #006A8B;">
+        <HBox prefHeight="43.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane prefHeight="43.0" prefWidth="200.0">
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <Label layoutX="40.0" prefHeight="43.0" prefWidth="349.0" text="CRUD Framework version 1.0"
+                       textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0"
+                       AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="-169.0"
+                       AnchorPane.topAnchor="0.0">
+                    <padding>
+                        <Insets left="8.0"/>
+                    </padding>
+                    <font>
+                        <Font name="HP Simplified" size="20.0"/>
+                    </font>
+                </Label>
+            </AnchorPane>
+            <AnchorPane prefHeight="43.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="200.0" spacing="8.0"
+                      AnchorPane.rightAnchor="0.0">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets right="8.0"/>
+                    </padding>
+                    <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" text="0"/>
+                    <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" text="0"/>
+                    <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" text="0"/>
+                </HBox>
+            </AnchorPane>
+        </HBox>
+    </AnchorPane>
+    <AnchorPane prefHeight="71.0" prefWidth="124.0"
+                style="-fx-background-color: #ffffff; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);; -fx-view-order: 5;">
+        <Pane prefHeight="52.0" prefWidth="124.0" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="9.0">
+            <Pane prefHeight="52.0" prefWidth="43.0">
+                <SVGPath content="M29.3868 52L0 43.5301V13.8158L29.3868 22.251V52Z" fill="#006a8b"/>
+                <SVGPath
+                        content="M14.1276 1.90921L39.811 9.30307L28.8724 20.3418L3.189 12.9479L14.1276 1.90921ZM13.6475 0L0 13.8158L29.3868 22.251L43.0343 8.43525L13.6475 0Z"
+                        fill="#006a8b"/>
+                <SVGPath
+                        content="M15.2935 2.22163L41.3541 9.71963V35.9279L15.2935 28.4646V2.22163ZM13.6476 0V29.749L43.0343 38.1842V8.43525L13.6476 0Z"
+                        fill="#006a8b"/>
+                <SVGPath content="M31.0327 50.299L43 38.1842L31.0327 34.7477V50.299Z" fill="#006a8b"/>
+            </Pane>
+            <SVGPath
+                    content="M53.4146 18.1649V30.2474C53.4146 31.2783 53.817 31.7732 54.6621 31.7732C55.5072 31.7732 55.9096 31.2783 55.9096 30.2474V18.1649H58.1632V30.0825C58.1632 32.6804 56.9559 34 54.5816 34C52.2073 34 51 32.7216 51 30.0825V18.1649H53.4146Z"
+                    fill="#006a8b"/>
+            <SVGPath
+                    content="M62.2679 22.4948V33.835H60.0948V18.1649H63.113L65.5678 27.5258V18.1649H67.7007V33.7938H65.2459L62.2679 22.4948Z"
+                    fill="#006a8b"/>
+            <SVGPath
+                    content="M76.7552 27.9794V30.0825C76.7552 32.6804 75.5479 34 73.1736 34C70.7993 34 69.592 32.6804 69.592 30.0825V21.9175C69.592 19.3196 70.7993 18 73.1736 18C75.5479 18 76.7552 19.3196 76.7552 21.9175V23.4433H74.5016V21.7938C74.5016 20.7629 74.0992 20.268 73.2541 20.268C72.409 20.268 72.0066 20.7629 72.0066 21.7938V30.2474C72.0066 31.2784 72.409 31.7732 73.2541 31.7732C74.0992 31.7732 74.5016 31.2784 74.5016 30.2474V28.0206H76.7552V27.9794Z"
+                    fill="#006a8b"/>
+            <SVGPath content="M78.5259 18.1649H80.9404V31.567H84.8842V33.7938H78.5259V18.1649Z" fill="#006a8b"/>
+            <SVGPath
+                    content="M88.7073 24.7629H92.0072V26.9897H88.7073V31.567H92.8523V33.7938H86.333V18.1649H92.8523V20.3917H88.7073V24.7629Z"
+                    fill="#006a8b"/>
+            <SVGPath
+                    content="M102.028 18.1649C104.402 18.1649 105.569 19.3608 105.569 21.7526V22.2886C105.569 23.8969 105.046 24.9278 103.999 25.4227C105.207 25.9175 105.77 27.0309 105.77 28.7629V30.0412C105.77 32.5154 104.563 33.7526 102.148 33.7526H98.3655V18.1649H102.028ZM100.78 20.3917V24.5154H101.706C102.671 24.5154 103.154 23.9794 103.154 22.866V22.0412C103.154 20.9691 102.752 20.433 101.947 20.433H100.78V20.3917ZM100.78 26.7835V31.567H102.148C102.993 31.567 103.396 31.0721 103.396 30.0412V28.6804C103.396 27.402 102.873 26.7835 101.867 26.7835H100.78Z"
+                    fill="#006a8b"/>
+            <SVGPath
+                    content="M107.42 21.9175C107.42 19.3196 108.627 18 111.042 18C113.456 18 114.664 19.3196 114.664 21.9175V30.0412C114.664 32.6392 113.456 33.9588 111.042 33.9588C108.627 33.9588 107.42 32.6392 107.42 30.0412V21.9175ZM109.794 30.2062C109.794 31.2371 110.197 31.7732 111.042 31.7732C111.887 31.7732 112.289 31.2371 112.289 30.2062V21.7938C112.289 20.7629 111.887 20.268 111.042 20.268C110.197 20.268 109.794 20.7629 109.794 21.7938V30.2062Z"
+                    fill="#006a8b"/>
+            <SVGPath
+                    content="M120.177 18.1649C122.551 18.1649 123.718 19.3608 123.718 21.7526V22.2886C123.718 23.8969 123.195 24.9278 122.149 25.4227C123.356 25.9175 123.919 27.0309 123.919 28.7629V30.0412C123.919 32.5154 122.712 33.7526 120.298 33.7526H116.595V18.1649H120.177ZM118.97 20.3917V24.5154H119.895C120.861 24.5154 121.344 23.9794 121.344 22.866V22.0412C121.344 20.9691 120.942 20.433 120.137 20.433H118.97V20.3917ZM118.97 26.7835V31.567H120.338C121.183 31.567 121.585 31.0721 121.585 30.0412V28.6804C121.585 27.402 121.062 26.7835 120.056 26.7835H118.97Z"
+                    fill="#006a8b"/>
+        </Pane>
+        <Pane prefHeight="40.0" prefWidth="40.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="12.0">
+            <SVGPath
+                    content="M18.9999 27.268C14.4409 27.268 10.7319 23.559 10.7319 19C10.7319 14.4411 14.4409 10.7321 18.9999 10.7321C23.5589 10.7321 27.2679 14.4411 27.2679 19C27.2679 23.559 23.5589 27.268 18.9999 27.268ZM18.9999 12.9586C15.6686 12.9586 12.9585 15.6688 12.9585 19C12.9585 22.3313 15.6687 25.0414 18.9999 25.0414C22.3311 25.0414 25.0413 22.3313 25.0413 19C25.0413 15.6688 22.3312 12.9586 18.9999 12.9586ZM18.9999 27.268C14.4409 27.268 10.7319 23.559 10.7319 19C10.7319 14.4411 14.4409 10.7321 18.9999 10.7321C23.5589 10.7321 27.2679 14.4411 27.2679 19C27.2679 23.559 23.5589 27.268 18.9999 27.268ZM18.9999 12.9586C15.6686 12.9586 12.9585 15.6688 12.9585 19C12.9585 22.3313 15.6687 25.0414 18.9999 25.0414C22.3311 25.0414 25.0413 22.3313 25.0413 19C25.0413 15.6688 22.3312 12.9586 18.9999 12.9586Z"
+                    fill="#929292"/>
+            <SVGPath
+                    content="M20.1924 38H17.8075C15.8787 38 14.3093 36.4307 14.3093 34.5018V33.695C13.4893 33.433 12.6925 33.1023 11.9271 32.7062L11.3553 33.278C9.97047 34.6645 7.75215 34.6239 6.40753 33.2775L4.72195 31.592C3.37495 30.2464 3.33621 28.0289 4.72239 26.6442L5.29373 26.0728C4.89762 25.3074 4.56698 24.5108 4.30491 23.6906H3.49815C1.56936 23.6906 0 22.1213 0 20.1925V17.8075C0 15.8787 1.56936 14.3094 3.49823 14.3094H4.30498C4.56705 13.4893 4.8977 12.6926 5.2938 11.9272L4.72202 11.3555C3.33665 9.97159 3.37488 7.75378 4.72247 6.40768L6.4082 4.72202C7.75593 3.37243 9.97374 3.33873 11.3559 4.72247L11.9272 5.29373C12.6926 4.8977 13.4893 4.56698 14.3094 4.30491V3.49815C14.3094 1.56928 15.8787 0 17.8076 0H20.1925C22.1213 0 23.6906 1.56928 23.6906 3.49815V4.30498C24.5107 4.56698 25.3074 4.8977 26.0728 5.2938L26.6446 4.72202C28.0295 3.33546 30.2478 3.37614 31.5924 4.72254L33.278 6.40805C34.625 7.75356 34.6637 9.97114 33.2775 11.3558L32.7062 11.9272C33.1023 12.6926 33.4329 13.4892 33.695 14.3094H34.5018C36.4306 14.3094 38 15.8787 38 17.8075V20.1925C38 22.1213 36.4306 23.6906 34.5018 23.6906H33.695C33.4329 24.5107 33.1023 25.3074 32.7062 26.0728L33.278 26.6446C34.6633 28.0285 34.6251 30.2463 33.2775 31.5924L31.5918 33.2781C30.2441 34.6276 28.0263 34.6613 26.6441 33.2776L26.0728 32.7063C25.3074 33.1024 24.5107 33.4331 23.6906 33.6952V34.502C23.6906 36.4307 22.1213 38 20.1924 38ZM12.2993 30.3681C13.3626 30.9969 14.5071 31.472 15.7008 31.7801C16.1925 31.9069 16.5359 32.3503 16.5359 32.8581V34.5018C16.5359 35.203 17.1065 35.7734 17.8076 35.7734H20.1925C20.8936 35.7734 21.4641 35.203 21.4641 34.5018V32.8581C21.4641 32.3503 21.8076 31.9069 22.2992 31.7801C23.493 31.472 24.6374 30.9969 25.7008 30.3681C26.1383 30.1094 26.6953 30.1797 27.0547 30.5392L28.2191 31.7036C28.7211 32.2062 29.5273 32.1945 30.017 31.7041L31.7037 30.0174C32.1922 29.5295 32.2086 28.7232 31.7042 28.2195L30.5393 27.0546C30.1799 26.6952 30.1096 26.1381 30.3682 25.7007C30.9971 24.6374 31.4721 23.493 31.7802 22.2992C31.9071 21.8075 32.3505 21.4641 32.8581 21.4641H34.5018C35.203 21.4641 35.7735 20.8937 35.7735 20.1925V17.8076C35.7735 17.1065 35.203 16.536 34.5018 16.536H32.8581C32.3504 16.536 31.9071 16.1925 31.7802 15.701C31.4721 14.5072 30.997 13.3627 30.3682 12.2995C30.1096 11.862 30.1799 11.3049 30.5393 10.9456L31.7037 9.78114C32.2071 9.27838 32.1939 8.47237 31.7042 7.98319L30.0175 6.29657C29.5287 5.80702 28.7224 5.7927 28.2196 6.29612L27.0548 7.46099C26.6954 7.82043 26.1382 7.89079 25.7008 7.63206C24.6375 7.00321 23.4931 6.52813 22.2993 6.22005C21.8077 6.09321 21.4642 5.64983 21.4642 5.1421V3.49815C21.4642 2.79701 20.8937 2.22656 20.1925 2.22656H17.8077C17.1065 2.22656 16.536 2.79701 16.536 3.49815V5.14195C16.536 5.64968 16.1925 6.09306 15.7009 6.2199C14.5072 6.52798 13.3627 7.00306 12.2994 7.63191C11.8618 7.89057 11.3048 7.82021 10.9454 7.46084L9.78107 6.29642C9.27905 5.79381 8.47281 5.80547 7.98319 6.2959L6.29642 7.9826C5.80791 8.47051 5.79159 9.27675 6.29598 9.78055L7.46084 10.9454C7.82021 11.3048 7.89057 11.8619 7.63191 12.2993C7.00306 13.3626 6.52806 14.507 6.21998 15.7008C6.09306 16.1925 5.64968 16.5359 5.14202 16.5359H3.49823C2.79708 16.5359 2.22656 17.1064 2.22656 17.8075V20.1925C2.22656 20.8936 2.79708 21.4641 3.49823 21.4641H5.14195C5.64968 21.4641 6.09299 21.8075 6.2199 22.2991C6.52798 23.4929 7.00306 24.6374 7.63184 25.7006C7.89049 26.1381 7.82013 26.6951 7.46077 27.0545L6.29635 28.2189C5.793 28.7217 5.80613 29.5277 6.2959 30.0169L7.98252 31.7035C8.4714 32.1931 9.27772 32.2074 9.78047 31.7039L10.9453 30.5391C11.2101 30.2743 11.761 30.0497 12.2993 30.3681Z"
+                    fill="#929292"/>
+        </Pane>
+        <Pane prefHeight="58.0" prefWidth="58.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="6.0">
+            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../assets/profile.png"/>
+            </ImageView>
+        </Pane>
+    </AnchorPane>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-view-order: 1;" VBox.vgrow="ALWAYS">
+        <HBox prefHeight="100.0" prefWidth="200.0" rotate="-2.9" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <rotationAxis>
+                <Point3D/>
+            </rotationAxis>
+            <AnchorPane prefHeight="200.0" prefWidth="345.0" style="-fx-border-color: #EEEEEE;">
+                <rotationAxis>
+                    <Point3D/>
+                </rotationAxis>
+                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </padding>
+                    <HBox prefHeight="24.0" prefWidth="200.0" style="-fx-view-order: 1;">
+                        <Label text="Database:">
+                            <font>
+                                <Font name="System Bold" size="20.0"/>
+                            </font>
+                        </Label>
+                        <Label text="CRUD Database">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                            <HBox.margin>
+                                <Insets left="16.0"/>
+                            </HBox.margin>
+                        </Label>
+                    </HBox>
+                    <HBox prefHeight="24.0" prefWidth="200.0">
+                        <rotationAxis>
+                            <Point3D/>
+                        </rotationAxis>
+                        <Label text="Table:">
+                            <font>
+                                <Font name="System Bold" size="20.0"/>
+                            </font>
+                        </Label>
+                    </HBox>
+                    <ListView prefHeight="375.0" prefWidth="314.0" style="-fx-view-order: 1;"
+                              VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #EEEEEE;"
+                        HBox.hgrow="SOMETIMES">
+                <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </padding>
+                    <Label style="-fx-underline: truE;" text="Tùy chọn hiển thị cột" textFill="#006a8b">
+                        <font>
+                            <Font name="System Bold Italic" size="20.0"/>
+                        </font>
+                    </Label>
+                    <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                        <VBox.margin>
+                            <Insets top="25.0"/>
+                        </VBox.margin>
+                    </AnchorPane>
+                </VBox>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="345.0" style="-fx-border-color: #EEEEEE;">
+                <padding>
+                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                </padding>
+                <VBox layoutX="-0.6000000238418579" layoutY="-0.6000000238418579"
+                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                      AnchorPane.topAnchor="0.0">
+                    <Label text="Database:">
+                        <font>
+                            <Font name="System Bold" size="20.0"/>
+                        </font>
+                    </Label>
+                    <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0"
+                                VBox.vgrow="ALWAYS">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0"
+                                    prefWidth="200.0"/>
+                    </ScrollPane>
+                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <VBox.margin>
+                            <Insets top="25.0"/>
+                        </VBox.margin>
+                        <Button layoutX="287.0" layoutY="51.0" mnemonicParsing="false"
+                                prefHeight="51.0" prefWidth="287.0"
+                                style="-fx-border-color: #ACACAC; -fx-background-color: #FFFFFF; -fx-border-radius: 10; -fx-background-image: url(&quot;restore.png&quot;);"
+                                text="KHÔI PHỤC" textAlignment="CENTER"
+                                AnchorPane.bottomAnchor="148.0" AnchorPane.leftAnchor="28.0"
+                                AnchorPane.rightAnchor="28.0">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Button>
+                        <Button layoutX="232.0" layoutY="141.0" mnemonicParsing="false"
+                                prefHeight="51.0" prefWidth="136.0"
+                                style="-fx-background-radius: 10; -fx-background-color: #006A8B;"
+                                text="LƯU" textFill="WHITE" AnchorPane.bottomAnchor="14.0"
+                                AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="28.0">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Button>
+                        <Button layoutX="28.0" layoutY="141.0" mnemonicParsing="false"
+                                prefHeight="51.0" prefWidth="136.0"
+                                style="-fx-background-radius: 10; -fx-background-color: #C4C4C4;"
+                                text="HỦY" textFill="WHITE" AnchorPane.bottomAnchor="14.0"
+                                AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="165.0">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="287.0"
+                                style="-fx-background-color: #ffffff; -fx-border-color: #AB0000; -fx-border-radius: 10;"
+                                text="XÓA DÒNG" textFill="#ab0000" AnchorPane.bottomAnchor="85.0"
+                                AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="28.0">
+                            <font>
+                                <Font size="20.0"/>
+                            </font>
+                        </Button>
+                    </AnchorPane>
+                </VBox>
+            </AnchorPane>
+        </HBox>
+    </AnchorPane>
+</VBox>
