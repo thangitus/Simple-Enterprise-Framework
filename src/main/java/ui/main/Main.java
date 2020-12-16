@@ -1,4 +1,4 @@
-package main;
+package  ui.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/drawable/main.fxml"));
         primaryStage.setTitle("CRUI Framework version 1.0");
         primaryStage.centerOnScreen();
         Scene newScene = new Scene(root, 1280  , 720);

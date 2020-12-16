@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="62.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="62.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="-26.0" layoutY="-44.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="97.0" AnchorPane.topAnchor="14.0">
          <image>
-            <Image url="@check.png" />
+            <Image url="@../assets/check.png" />
          </image>
       </ImageView>
       <Label layoutX="151.0" layoutY="16.0" text="Cập nhật thành công">

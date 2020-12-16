@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="62.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="107.0" AnchorPane.topAnchor="23.0">
          <image>
-            <Image url="@question.png" />
+            <Image url="@../assets/question.png" />
          </image>
       </ImageView>
       <Label layoutX="164.0" layoutY="32.0" text="Xác nhận xóa dòng" AnchorPane.leftAnchor="159.0" AnchorPane.topAnchor="28.0">
