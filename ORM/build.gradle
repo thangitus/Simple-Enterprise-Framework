@@ -16,4 +16,12 @@ dependencies {
     // this is for mysql java connector
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
     runtime "mysql:mysql-connector-java:8.0.15"
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.3.7.Final'
+
+    // https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+    compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+
+    compile 'org.hibernate:hibernate-entitymanager:5.4.25.Final'
 }
