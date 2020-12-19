@@ -17,6 +17,10 @@ public class ChiTietLopHoc {
         this.phongHoc = phongHoc;
     }
 
+
+
+
+
     public ChiTietLopHoc() {
 
     }
