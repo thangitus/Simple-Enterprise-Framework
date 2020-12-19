@@ -1,19 +1,22 @@
-import dao.ChiTietLopHocDAO;
-import entity.ChiTietLopHoc;
-
-import java.sql.*;
-import java.util.List;
+import dao.LopHocDAO;
+import dao.SinhVienDAO;
+import entity.LopHoc;
+import entity.SinhVien;
 
 class Main {
    public static void main(String args[]) {
-      // - Test hibernate ------
-      ChiTietLopHocDAO chiTietLopHocDAO = new ChiTietLopHocDAO();
-      chiTietLopHocDAO.save(new ChiTietLopHoc("aaa","bbb","ccc"));
-      List<ChiTietLopHoc> chiTietLopHocList = chiTietLopHocDAO.findAll();
-      chiTietLopHocList
-              .stream()
-              .forEach(
-                      instance->System.out.println(instance.getId()));
-      chiTietLopHocDAO.close();
+//      // - Test hibernate ------
+//      LopHocDAO lopHocDAO = new LopHocDAO();
+//      lopHocDAO.save(new LopHoc("321"));
+//      lopHocDAO.close();
+
+      SinhVienDAO sinhVienDAO = new SinhVienDAO();
+//      sinhVienDAO.save(new SinhVien("123","abc", "xyz","cmd","123"));
+
+//      sinhVienDAO.findAll().forEach(System.out::println);
+
+      SinhVien sinhVien = sinhVienDAO.findByID("2222");
+      sinhVienDAO.delete(sinhVien);
+      sinhVienDAO.close();
    }
 }

@@ -9,16 +9,10 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = targetCompatibility = "1.8"
-
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
-
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // this is for mysql java connector
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
-    runtime "mysql:mysql-connector-java:8.0.15"
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
+    runtime "mysql:mysql-connector-java:5.1.46"
 }
