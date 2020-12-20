@@ -5,11 +5,14 @@ import java.io.File
 import java.sql.Connection
 import java.sql.ResultSet
 import com.mysql.cj.jdbc.result.ResultSetMetaData
-import com.squareup.javapoet.FieldSpec
-import com.squareup.javapoet.MethodSpec
+import com.squareup.javapoet.*
+import org.apache.commons.lang3.text.WordUtils
 import java.sql.Statement
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Table
 
-class Table(tableName: String, connection: Connection) : Generatable {
+class Table(private val tableName: String, connection: Connection) : Generatable {
     private val columnList: MutableList<Column>
 
     init {
@@ -34,5 +37,20 @@ class Table(tableName: String, connection: Connection) : Generatable {
             methodSpecs.add(it.createGetterMethod())
             methodSpecs.add(it.createSetterMethod())
         }
+        val className = WordUtils.capitalize(tableName, '_', ' ')
+                .replace("_", "")
+                .replace("", "")
+        val typeSpecBuilder = TypeSpec.classBuilder(className)
+        typeSpecBuilder.addAnnotation(Entity::class.java)
+        val tableAnnotation = AnnotationSpec.builder(Table::class.java)
+                .addMember("name", "\$S", tableName)
+                .build()
+
+        typeSpecBuilder.addAnnotation(tableAnnotation)
+        typeSpecBuilder.addFields(fieldSpecs)
+        typeSpecBuilder.addMethods(methodSpecs)
+        JavaFile.builder("entity", typeSpecBuilder.build())
+                .build().writeTo(directory)
+
     }
 }

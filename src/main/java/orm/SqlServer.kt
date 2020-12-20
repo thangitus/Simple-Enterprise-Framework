@@ -21,7 +21,6 @@ class SqlServer(private val user: String, private val password: String) {
             while (resultSet.next()) {
                 val dbName = resultSet.getString("TABLE_CAT")
                 databases.add(dbName)
-                println(dbName)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -32,8 +31,7 @@ class SqlServer(private val user: String, private val password: String) {
     fun connectToDatabase(schema: String): SqlDatabase? {
         try {
             val connection = DriverManager.getConnection("$baseUrl/$schema", user, password)
-            val sqlDatabase = SqlDatabase(connection)
-
+            return SqlDatabase(connection)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }

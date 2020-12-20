@@ -1,13 +1,16 @@
 package orm;
 
+import java.io.File;
 import java.util.List;
 
 class Main {
    public static void main(String args[]) {
-      SqlServer mySqlServer = new SqlServer("root", "admin");
-      List<String> databases = mySqlServer.connectToServer();
-      for (String database : databases)
-         System.out.println(database);
-      mySqlServer.connectToDatabase("hibernateexercise");
+      SqlServer sqlServer = new SqlServer("root", "admin");
+      List<String> databases = sqlServer.connectToServer();
+      SqlDatabase sqlDatabase = sqlServer.connectToDatabase("hanks");
+      File file = new File("E:\\Nam Four\\tmp");
+      if (sqlDatabase != null) {
+         sqlDatabase.generate(file);
+      }
    }
 }  

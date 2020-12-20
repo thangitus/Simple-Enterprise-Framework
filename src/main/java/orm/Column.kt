@@ -1,11 +1,17 @@
 package orm
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData
+import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
 import org.apache.commons.lang3.text.WordUtils
+import org.jetbrains.annotations.NotNull
 import javax.lang.model.element.Modifier
+import javax.persistence.Column
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
 
 class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
@@ -13,9 +19,14 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
     var columnName: String = resultSetMetaData.getColumnName(column)
     var isAutoIncrement: Boolean = resultSetMetaData.isAutoIncrement(column)
     var isNullable: Boolean = resultSetMetaData.isNullable(column) != 0
-    var isCurrency: Boolean = resultSetMetaData.isCurrency(column)
     var isPrimaryKey: Boolean = resultSetMetaData.fields[column - 1].isPrimaryKey
+    var fieldName: String
 
+    init {
+        fieldName = Character.toLowerCase(columnName[0]) + columnName.substring(1)
+        fieldName = fieldName.replace("_", "")
+        fieldName = fieldName.replace(" ", "")
+    }
 
     private fun getSimpleClassName(): String {
         val tokens = className.split(".").toList()
@@ -35,30 +46,39 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
 
     fun toFieldSpec(): FieldSpec {
         val typeName = ClassName.get(getPackageName(), getSimpleClassName())
-        var fieldName: String = WordUtils.capitalizeFully(columnName.toLowerCase(), '_')
-                .replace("_", "")
-        fieldName = Character.toLowerCase(fieldName[0]) + fieldName.substring(1)
         val fieldSpecBuilder = FieldSpec.builder(typeName, fieldName, Modifier.PRIVATE)
+        if (isPrimaryKey)
+            fieldSpecBuilder.addAnnotation(Id::class.java)
+
+        val annotationColumnName = AnnotationSpec.builder(Column::class.java)
+                .addMember("name", "\$S", columnName)
+                .build()
+
+        if (isAutoIncrement)
+            fieldSpecBuilder.addAnnotation(AnnotationSpec.builder(NotNull::class.java).build())
+
+        if (!isNullable)
+            fieldSpecBuilder.addAnnotation(AnnotationSpec.builder(GeneratedValue::class.java)
+                    .addMember("strategy", "\$T.\$L", GenerationType::class.java, GenerationType.AUTO.name).build())
+
+        fieldSpecBuilder.addAnnotation(annotationColumnName)
+
         return fieldSpecBuilder.build()
     }
 
     fun createGetterMethod(): MethodSpec {
         val typeName = ClassName.get(getPackageName(), getSimpleClassName())
-        val fieldName: String = WordUtils.capitalize(columnName.toLowerCase(), '_')
-                .replace("_", "")
         val methodName = "get" + Character.toUpperCase(fieldName[0]) +
                          fieldName.substring(1)
         return MethodSpec.methodBuilder(methodName)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(typeName)
-                .addStatement("return fieldName")
+                .addStatement("return $fieldName")
                 .build()
     }
 
     fun createSetterMethod(): MethodSpec {
         val typeName = ClassName.get(getPackageName(), getSimpleClassName())
-        val fieldName: String = WordUtils.capitalize(columnName.toLowerCase(), '_')
-                .replace("_", "")
         val methodName = "set" + Character.toUpperCase(fieldName[0]) +
                          fieldName.substring(1)
         return MethodSpec.methodBuilder(methodName)
