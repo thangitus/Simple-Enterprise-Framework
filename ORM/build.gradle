@@ -2,12 +2,6 @@ plugins {
     id 'java-library'
 }
 
-sourceCompatibility = targetCompatibility = "1.8"
-
-compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
-}
-
 repositories {
     mavenCentral()
 }
@@ -27,5 +21,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-java8
     compile group: 'org.hibernate', name: 'hibernate-java8', version: '5.2.3.Final'
+
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0-b170201.1204'
+
 
 }
