@@ -1,5 +1,6 @@
 package orm;
 
+import gradleGenerate.GradleGen;
 import orm.config.PersistenceConfig;
 
 import java.io.File;
@@ -21,5 +22,8 @@ class Main {
       entityClasses.add("entity.LopHoc");
       PersistenceConfig persistenceConfig = new PersistenceConfig(entityClasses, "root","1111","com.mysql.jdbc.Driver","jdbc:mysql://localhost:3306/hibernateexercise");
       persistenceConfig.generate(new File("E:\\Nam Four\\tmp\\persistence.xml"));
+
+      GradleGen gradleGen = new GradleGen();
+      gradleGen.generate(new File("E:\\Nam Four\\tmp"));
    }
 }
