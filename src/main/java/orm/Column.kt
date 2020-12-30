@@ -28,7 +28,7 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
         fieldName = fieldName.replace(" ", "")
     }
 
-    private fun getSimpleClassName(): String {
+    fun getSimpleClassName(): String {
         val tokens = className.split(".").toList()
         return tokens.last()
     }
@@ -51,15 +51,17 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
             fieldSpecBuilder.addAnnotation(Id::class.java)
 
         val annotationColumnName = AnnotationSpec.builder(Column::class.java)
-                .addMember("name", "\$S", columnName)
-                .build()
+            .addMember("name", "\$S", columnName)
+            .build()
 
         if (isAutoIncrement)
             fieldSpecBuilder.addAnnotation(AnnotationSpec.builder(NotNull::class.java).build())
 
         if (!isNullable)
-            fieldSpecBuilder.addAnnotation(AnnotationSpec.builder(GeneratedValue::class.java)
-                    .addMember("strategy", "\$T.\$L", GenerationType::class.java, GenerationType.AUTO.name).build())
+            fieldSpecBuilder.addAnnotation(
+                AnnotationSpec.builder(GeneratedValue::class.java)
+                    .addMember("strategy", "\$T.\$L", GenerationType::class.java, GenerationType.AUTO.name).build()
+            )
 
         fieldSpecBuilder.addAnnotation(annotationColumnName)
 
@@ -69,23 +71,23 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
     fun createGetterMethod(): MethodSpec {
         val typeName = ClassName.get(getPackageName(), getSimpleClassName())
         val methodName = "get" + Character.toUpperCase(fieldName[0]) +
-                         fieldName.substring(1)
+                fieldName.substring(1)
         return MethodSpec.methodBuilder(methodName)
-                .addModifiers(Modifier.PUBLIC)
-                .returns(typeName)
-                .addStatement("return $fieldName")
-                .build()
+            .addModifiers(Modifier.PUBLIC)
+            .returns(typeName)
+            .addStatement("return $fieldName")
+            .build()
     }
 
     fun createSetterMethod(): MethodSpec {
         val typeName = ClassName.get(getPackageName(), getSimpleClassName())
         val methodName = "set" + Character.toUpperCase(fieldName[0]) +
-                         fieldName.substring(1)
+                fieldName.substring(1)
         return MethodSpec.methodBuilder(methodName)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(typeName, fieldName)
-                .addStatement("this.\$N = \$N", fieldName, fieldName)
-                .build()
+            .addModifiers(Modifier.PUBLIC)
+            .addParameter(typeName, fieldName)
+            .addStatement("this.\$N = \$N", fieldName, fieldName)
+            .build()
 
     }
 }
