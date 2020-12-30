@@ -8,13 +8,19 @@ import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.text.WordUtils
 import java.sql.Statement
+import javax.lang.model.element.Modifier
 import javax.persistence.*
 import javax.persistence.Table
 
-class Table(private val tableName: String, connection: Connection) : Generatable {
-    private val columnList: MutableList<Column>
+class Table(val tableName: String, connection: Connection) : Generatable {
+    val className: String
+    val columnList: MutableList<Column>
 
     init {
+        className = WordUtils.capitalize(tableName, '_', ' ')
+            .replace("_", "")
+            .replace("", "")
+
         columnList = ArrayList()
         val statement: Statement = connection.createStatement()
         val results: ResultSet = statement.executeQuery("SELECT * FROM $tableName")
@@ -34,7 +40,30 @@ class Table(private val tableName: String, connection: Connection) : Generatable
     }
 
     private fun generateDao(directory: File) {
+        val typeSpecBuilder = TypeSpec.classBuilder(className + "Dao")
 
+        typeSpecBuilder.superclass(
+            ParameterizedTypeName.get(
+                ClassName.get("dao", "BaseDao"),
+                TypeVariableName.get(className),
+                TypeVariableName.get(getSimpleClassNamePrimaryKey())
+            )
+        )
+
+        val returnType = ParameterizedTypeName.get(
+            ClassName.get(Class::class.java),
+            TypeVariableName.get(className)
+        )
+        val getClazzMethod = MethodSpec.methodBuilder("getClazz")
+            .addAnnotation(Override::class.java)
+            .addModifiers(Modifier.PROTECTED)
+            .returns(returnType)
+            .addStatement("return \$L.class", className)
+            .build()
+
+        typeSpecBuilder.addMethod(getClazzMethod)
+        JavaFile.builder("dao", typeSpecBuilder.build())
+            .build().writeTo(directory)
     }
 
 
@@ -46,9 +75,7 @@ class Table(private val tableName: String, connection: Connection) : Generatable
             methodSpecs.add(it.createGetterMethod())
             methodSpecs.add(it.createSetterMethod())
         }
-        val className = WordUtils.capitalize(tableName, '_', ' ')
-            .replace("_", "")
-            .replace("", "")
+
         val typeSpecBuilder = TypeSpec.classBuilder(className)
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
@@ -60,5 +87,13 @@ class Table(private val tableName: String, connection: Connection) : Generatable
         typeSpecBuilder.addMethods(methodSpecs)
         JavaFile.builder("entity", typeSpecBuilder.build())
             .build().writeTo(directory)
+    }
+
+    private fun getSimpleClassNamePrimaryKey(): String {
+        columnList.forEach {
+            if (it.isPrimaryKey)
+                return it.getSimpleClassName()
+        }
+        return ""
     }
 }
