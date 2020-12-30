@@ -8,8 +8,8 @@ import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.text.WordUtils
 import java.sql.Statement
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
+import javax.lang.model.element.Modifier
+import javax.persistence.*
 import javax.persistence.Table
 
 class Table(private val tableName: String, connection: Connection) : Generatable {
@@ -30,6 +30,53 @@ class Table(private val tableName: String, connection: Connection) : Generatable
     }
 
     override fun generate(directory: File) {
+        generateEntities(directory)
+        generatePackageDao(directory);
+    }
+
+    private fun generatePackageDao(directory: File) {
+        generateDao(directory)
+        generateEntityManagerProvider(directory)
+
+    }
+
+    private fun generateEntityManagerProvider(directory: File) {
+        val persistenceFieldBuilder = FieldSpec.builder(ClassName.get(String::class.java), "PERSISTENCE_UNIT_NAME")
+        persistenceFieldBuilder.addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+        persistenceFieldBuilder.initializer("\$S", "persistence")
+
+        val instanceFieldBuilder = FieldSpec.builder(ClassName.get(EntityManagerFactory::class.java), "INSTANCE")
+        instanceFieldBuilder.addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+
+        val constructor = MethodSpec.constructorBuilder()
+            .addModifiers(Modifier.PRIVATE).build()
+
+        val getInstance = MethodSpec.methodBuilder("createEntityManager")
+            .returns(EntityManager::class.java)
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+            .beginControlFlow("if (INSTANCE == null)")
+            .addStatement("INSTANCE = \$T.createEntityManagerFactory(PERSISTENCE_UNIT_NAME)", Persistence::class.java)
+            .endControlFlow()
+            .addStatement("return INSTANCE.createEntityManager()")
+            .build()
+
+
+        val typeSpecBuilder = TypeSpec.classBuilder("EntityManagerProvider")
+        typeSpecBuilder.addModifiers(Modifier.PUBLIC)
+        typeSpecBuilder.addField(persistenceFieldBuilder.build())
+        typeSpecBuilder.addField(instanceFieldBuilder.build())
+        typeSpecBuilder.addMethod(constructor)
+        typeSpecBuilder.addMethod(getInstance)
+
+        JavaFile.builder("dao", typeSpecBuilder.build())
+            .build().writeTo(directory)
+    }
+
+    private fun generateDao(directory: File) {
+
+    }
+
+    private fun generateEntities(directory: File) {
         val fieldSpecs: MutableList<FieldSpec> = ArrayList()
         val methodSpecs: MutableList<MethodSpec> = ArrayList()
         columnList.forEach {
@@ -38,19 +85,18 @@ class Table(private val tableName: String, connection: Connection) : Generatable
             methodSpecs.add(it.createSetterMethod())
         }
         val className = WordUtils.capitalize(tableName, '_', ' ')
-                .replace("_", "")
-                .replace("", "")
+            .replace("_", "")
+            .replace("", "")
         val typeSpecBuilder = TypeSpec.classBuilder(className)
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
-                .addMember("name", "\$S", tableName)
-                .build()
+            .addMember("name", "\$S", tableName)
+            .build()
 
         typeSpecBuilder.addAnnotation(tableAnnotation)
         typeSpecBuilder.addFields(fieldSpecs)
         typeSpecBuilder.addMethods(methodSpecs)
         JavaFile.builder("entity", typeSpecBuilder.build())
-                .build().writeTo(directory)
-
+            .build().writeTo(directory)
     }
 }
