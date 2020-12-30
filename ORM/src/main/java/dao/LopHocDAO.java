@@ -33,7 +33,7 @@ public class LopHocDAO {
         return entityManager.createQuery("SELECT lh FROM LopHoc lh", LopHoc.class).getResultList();
     }
 
-    public void delete(LopHoc lopHoc) {
+    public void delete(LopHoc... lopHoc) {
         entityManager.getTransaction().begin();
         entityManager.remove(lopHoc);
         entityManager.getTransaction().commit();

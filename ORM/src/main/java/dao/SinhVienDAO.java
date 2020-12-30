@@ -7,34 +7,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class SinhVienDAO {
-    EntityManagerFactory entityManagerFactory = EntityManagerProvider.getEntityManagerFactory();
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+public class SinhVienDAO extends BaseDao<SinhVien, String> {
 
-    public void save(SinhVien sinhVien) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(sinhVien);
-        entityManager.getTransaction().commit();
+
+    @Override
+    protected Class<SinhVien> getClazz() {
+        return SinhVien.class;
     }
-
-    public SinhVien findByID(String mssv) {
-        SinhVien sinhVien = entityManager.find(SinhVien.class, mssv);
-        return sinhVien;
-    }
-
-    public List<SinhVien> findAll() {
-        return entityManager.createQuery("SELECT sv FROM SinhVien sv", SinhVien.class).getResultList();
-    }
-
-    public void delete(SinhVien sinhVien) {
-        entityManager.getTransaction().begin();
-        entityManager.remove(sinhVien);
-        entityManager.getTransaction().commit();
-    }
-
-    public void close() {
-        entityManager.close();
-        entityManagerFactory.close();
-    }
-
 }
