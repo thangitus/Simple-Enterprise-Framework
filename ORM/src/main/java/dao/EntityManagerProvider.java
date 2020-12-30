@@ -15,7 +15,7 @@ public class EntityManagerProvider {
         return emf;
     }
 
-    public void closeEmf() {
+    public static void closeEmf() {
         if (emf.isOpen() || emf != null) {
             emf.close();
         }

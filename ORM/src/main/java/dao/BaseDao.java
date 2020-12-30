@@ -9,9 +9,11 @@ public abstract class BaseDao<T, E> {
     EntityManagerFactory entityManagerFactory = EntityManagerProvider.getEntityManagerFactory();
     EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    public void insert(T... object) {
+    public void insert(T... objects) {
         entityManager.getTransaction().begin();
-        entityManager.persist(object);
+        for (T object : objects) {
+            entityManager.persist(object);
+        }
         entityManager.getTransaction().commit();
     }
 
@@ -20,18 +22,19 @@ public abstract class BaseDao<T, E> {
     }
 
     public List<T> getAll() {
-        return entityManager.createQuery("SELECT * FROM " + getClazz().getSimpleName(), getClazz()).getResultList();
+        return entityManager.createQuery("SELECT obj FROM " + getClazz().getSimpleName() + " obj", getClazz()).getResultList();
     }
 
-    public void delete(T... object) {
+    public void delete(T... objects) {
         entityManager.getTransaction().begin();
-        entityManager.remove(object);
+        for (T object : objects) {
+            entityManager.remove(object);
+        }
         entityManager.getTransaction().commit();
     }
 
     public void close() {
         entityManager.close();
-        entityManagerFactory.close();
     }
 
     protected abstract Class<T> getClazz();

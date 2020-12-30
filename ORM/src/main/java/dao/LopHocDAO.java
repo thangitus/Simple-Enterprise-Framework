@@ -20,7 +20,6 @@ public class LopHocDAO {
 
     public void close() {
         entityManager.close();
-        entityManagerFactory.close();
     }
 
 
