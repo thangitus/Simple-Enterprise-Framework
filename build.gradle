@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 group 'org.example'
@@ -8,6 +10,11 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = "15.0.1"
+    modules = ["javafx.fxml", "javafx.controls"]
 }
 
 dependencies {
@@ -32,6 +39,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-io/commons-io
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    compile 'com.jfoenix:jfoenix:9.0.10'
 
 }
 compileKotlin {
