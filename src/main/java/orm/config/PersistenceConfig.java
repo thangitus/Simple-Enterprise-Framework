@@ -19,7 +19,7 @@ public class PersistenceConfig implements Generatable {
     private String jdbcDriver;
     private String url;
 
-    public PersistenceConfig(){
+    public PersistenceConfig() {
 
     }
 
@@ -38,7 +38,9 @@ public class PersistenceConfig implements Generatable {
 
         // Read persistence template file
         try {
-            Files.lines(path).forEach((line)->{builder.append(line+"\n");});
+            Files.lines(path).forEach((line) -> {
+                builder.append(line + "\n");
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,8 +48,8 @@ public class PersistenceConfig implements Generatable {
         // Convert entity classes name to right format
         String entities = entityClasses
                 .stream()
-                .map(classEntity->"<class>" + classEntity + "</class>")
-                .reduce("",(a,b)-> a + b);
+                .map(classEntity -> "<class>entity." + classEntity + "</class>")
+                .reduce("", (a, b) -> a + b);
 
         String finalPersistenceContent = builder.toString();
 
@@ -58,11 +60,9 @@ public class PersistenceConfig implements Generatable {
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%url%", url);
 
         try {
-            if (directory.createNewFile()){
-                FileWriter myWriter = new FileWriter(directory);
-                myWriter.write(finalPersistenceContent);
-                myWriter.close();
-            }
+            FileWriter myWriter = new FileWriter(directory);
+            myWriter.write(finalPersistenceContent);
+            myWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
 class SqlDatabase(connection: Connection) : Generatable {
-    private val tableList: MutableList<Table>
+    val tableList: MutableList<Table>
 
     init {
         tableList = ArrayList()

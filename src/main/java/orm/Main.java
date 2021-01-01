@@ -9,7 +9,7 @@ import java.util.List;
 
 class Main {
    public static void main(String args[]) {
-      SqlServer sqlServer = new SqlServer("root", "admin");
+      SqlServer sqlServer = new SqlServer("root", "1111");
       List<String> databases = sqlServer.connectToServer();
       SqlDatabase sqlDatabase = sqlServer.connectToDatabase("hibernateexercise");
       File file = new File("D:\\Nam Four\\tmp");
@@ -17,9 +17,12 @@ class Main {
          sqlDatabase.generate(file);
       }
 
+
+
       List<String> entityClasses = new ArrayList<>();
-      entityClasses.add("entity.SinhVien");
-      entityClasses.add("entity.LopHoc");
+
+      sqlDatabase.getTableList().stream().map(Table::getClassName).forEach(entityClasses::add);
+
       PersistenceConfig persistenceConfig = new PersistenceConfig(entityClasses, "root","1111","com.mysql.jdbc.Driver","jdbc:mysql://localhost:3306/hibernateexercise");
       persistenceConfig.generate(new File("D:\\Nam Four\\tmp\\persistence.xml"));
 
