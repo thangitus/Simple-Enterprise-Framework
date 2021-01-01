@@ -27,7 +27,7 @@ public class Main extends Application {
     private JFXPasswordField edtPassword;
 
     @FXML
-    private JFXTextArea edtDatabaseUri;
+    private JFXTextField edtDatabaseUri;
 
     @FXML
     private JFXButton btnLogin;
