@@ -1,0 +1,20 @@
+#root {
+    -fx-background-radius: 15 15 10 10;
+}
+
+#titleBar {
+    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: #006A8B;
+}
+
+#appTitle {
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14;
+    -fx-font-family: Roboto;
+}
+
+.titleBarButton {
+    -fx-background-radius: 50;
+    -fx-background-color: #4790A7;
+}

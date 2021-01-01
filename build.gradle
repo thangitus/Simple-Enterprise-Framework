@@ -17,6 +17,10 @@ dependencies {
     // this is for mysql java connector
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
     runtime "mysql:mysql-connector-java:8.0.15"
+
+    compile 'com.jfoenix:jfoenix:9.0.10'
+
+    compile group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '4.7.0-9.1.2'
 }
 
 javafx{
