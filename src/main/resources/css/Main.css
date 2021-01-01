@@ -36,16 +36,14 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 0 0 0 10;
     -fx-border-style: hidden solid hidden hidden;
-    -fx-border-width: 2;
-    -fx-border-color: #eeeeee;
+    -fx-border-color: #c8c8c8;
 }
 
 #rightPane {
     -fx-background-color: #ffffff;
     -fx-background-radius: 0 0 10 0;
     -fx-border-style: hidden hidden hidden solid;
-    -fx-border-width: 2;
-    -fx-border-color: #eeeeee;
+    -fx-border-color: #c8c8c8;
 }
 
 #centerPane {
