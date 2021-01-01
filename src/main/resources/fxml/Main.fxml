@@ -3,15 +3,17 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" style="-fx-background-radius: 15 15 10 10;" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" style="-fx-background-radius: 15 15 10 10;" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.Main">
    <top>
-      <HBox id="titleBar" alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+      <HBox fx:id="titleBar" alignment="CENTER_RIGHT" onMouseDragged="#handleDragged" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
                <HBox.margin>
@@ -29,8 +31,8 @@
                   <Label id="appTitle" text="CRUD Project Version 1.0" />
                </children>
             </HBox>
-            <JFXButton id="minimizeButton" prefHeight="32.0" prefWidth="32.0" styleClass="titleBarButton" />
-            <JFXButton id="closeButton" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #4790A7; -fx-background-radius: 50;">
+            <JFXButton id="minimizeButton" onAction="#minimize" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #00ce26;" styleClass="titleBarButton" />
+            <JFXButton id="closeButton" onAction="#close" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #ff5e4c; -fx-background-radius: 50;">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -44,12 +46,22 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <HBox prefHeight="55.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
-               <effect>
-                  <Shadow />
-               </effect>
-            </HBox>
+            <HBox prefHeight="55.0" prefWidth="1280.0" style="-fx-background-color: blue;" BorderPane.alignment="CENTER" />
          </top>
+         <left>
+            <VBox prefHeight="671.0" prefWidth="206.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <VBox prefHeight="671.0" prefWidth="232.0" style="-fx-background-color: yellow;" BorderPane.alignment="CENTER" />
+         </right>
+         <center>
+            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+         </center>
       </BorderPane>
    </center>
 </BorderPane>
