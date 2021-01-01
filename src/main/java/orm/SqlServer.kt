@@ -3,18 +3,16 @@ package orm
 import java.sql.*
 
 
-class SqlServer(private val user: String, private val password: String) {
+class SqlServer(private val user: String, private val password: String, private val baseUrl: String) {
     companion object {
-        const val className = "com.mysql.cj.jdbc.Drive"
-        const val baseUrl = "jdbc:mysql://localhost:3306"
-
+        const val className = "com.mysql.cj.jdbc.Driver"
     }
 
     fun connectToServer(): List<String> {
         val databases: MutableList<String> = ArrayList()
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver")
+            Class.forName(className)
             val connection: Connection = DriverManager.getConnection(baseUrl, user, password)
             val metadata: DatabaseMetaData = connection.metaData
             val resultSet: ResultSet = metadata.catalogs
