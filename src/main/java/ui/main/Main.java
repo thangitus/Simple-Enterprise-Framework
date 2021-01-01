@@ -18,8 +18,8 @@ public class Main extends Application {
 
     public void handleDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setX(event.getScreenX() - x);
-        stage.setY(event.getScreenY() - y);
+        stage.setX(event.getScreenX() - 6 - x);
+        stage.setY(event.getScreenY() - 6 - y);
     }
 
     public void handlePressed(MouseEvent event) {
@@ -49,7 +49,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
         primaryStage.setTitle("CRUD Framework version 1.0");
         primaryStage.centerOnScreen();
-        Scene scene = new Scene(root, 1280  , 720);
+        Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);

@@ -10,6 +10,7 @@
 
 #root {
     -fx-background-radius: 15 15 10 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
 }
 
 #titleBar {
@@ -27,4 +28,36 @@
 .titleBarButton {
     -fx-background-radius: 50;
     -fx-background-color: #4790A7;
+}
+
+#minimizeButton {
+    -fx-background-color: #00ce26;
+}
+
+#closeButton {
+    -fx-background-color: #ff5e4c;
+}
+
+#toolBar {
+    -fx-background-color: #ffffff;
+}
+
+#leftPane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 0 0 10;
+    -fx-border-style: hidden solid hidden hidden;
+    -fx-border-width: 2;
+    -fx-border-color: #eeeeee;
+}
+
+#rightPane {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 0 10 0;
+    -fx-border-style: hidden hidden hidden solid;
+    -fx-border-width: 2;
+    -fx-border-color: #eeeeee;
+}
+
+#centerPane {
+    -fx-background-color: #ffffff;
 }

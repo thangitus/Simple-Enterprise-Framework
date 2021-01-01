@@ -1,67 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" style="-fx-background-radius: 15 15 10 10;" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.Main">
-   <top>
-      <HBox fx:id="titleBar" alignment="CENTER_RIGHT" onMouseDragged="#handleDragged" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                     <image>
-                        <Image url="@../images/database-storage.png" />
-                     </image>
-                  </ImageView>
-                  <Label id="appTitle" text="CRUD Project Version 1.0" />
-               </children>
-            </HBox>
-            <JFXButton id="minimizeButton" onAction="#minimize" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #00ce26;" styleClass="titleBarButton" />
-            <JFXButton id="closeButton" onAction="#close" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #ff5e4c; -fx-background-radius: 50;">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </JFXButton>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-         </padding>
-      </HBox>
-   </top>
-   <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<StackPane style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.main.Main">
+   <children>
+      <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0">
          <top>
-            <HBox prefHeight="55.0" prefWidth="1280.0" style="-fx-background-color: blue;" BorderPane.alignment="CENTER" />
+            <HBox fx:id="titleBar" alignment="CENTER_RIGHT" onMouseDragged="#handleDragged" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <children>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/database-storage.png" />
+                           </image>
+                        </ImageView>
+                        <Label id="appTitle" text="CRUD Project Version 1.0" />
+                     </children>
+                  </HBox>
+                  <JFXButton id="minimizeButton" onAction="#minimize" prefHeight="32.0" prefWidth="32.0" styleClass="titleBarButton" />
+                  <JFXButton id="closeButton" onAction="#close" prefHeight="32.0" prefWidth="32.0" styleClass="titleBarButton">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </HBox>
          </top>
-         <left>
-            <VBox prefHeight="671.0" prefWidth="206.0" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
-         </left>
-         <right>
-            <VBox prefHeight="671.0" prefWidth="232.0" style="-fx-background-color: yellow;" BorderPane.alignment="CENTER" />
-         </right>
          <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <top>
+                  <HBox fx:id="toolBar" prefWidth="1280.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="52.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/logo.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </HBox>
+               </top>
+               <left>
+                  <VBox fx:id="leftPane" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <effect>
+                        <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                     </effect>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                           <children>
+                              <Label text="Database:">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label text="Test database" />
+                           </children>
+                        </HBox>
+                        <Label text="Table(s):">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <JFXListView prefHeight="664.0" prefWidth="176.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </left>
+               <right>
+                  <VBox fx:id="rightPane" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <effect>
+                        <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                     </effect>
+                  </VBox>
+               </right>
+               <center>
+                  <VBox fx:id="centerPane" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <effect>
+                        <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                     </effect>
+                  </VBox>
+               </center>
+            </BorderPane>
          </center>
       </BorderPane>
-   </center>
-</BorderPane>
+   </children>
+   <padding>
+      <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+   </padding>
+</StackPane>
