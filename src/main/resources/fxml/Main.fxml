@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" style="-fx-background-radius: 15 15 10 10;" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox id="titleBar" alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../images/database-storage.png" />
+                     </image>
+                  </ImageView>
+                  <Label id="appTitle" text="CRUD Project Version 1.0" />
+               </children>
+            </HBox>
+            <JFXButton id="minimizeButton" prefHeight="32.0" prefWidth="32.0" styleClass="titleBarButton" />
+            <JFXButton id="closeButton" prefHeight="32.0" prefWidth="32.0" style="-fx-background-color: #4790A7; -fx-background-radius: 50;">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <HBox prefHeight="55.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+               <effect>
+                  <Shadow />
+               </effect>
+            </HBox>
+         </top>
+      </BorderPane>
+   </center>
+</BorderPane>

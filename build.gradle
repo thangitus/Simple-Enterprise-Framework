@@ -42,6 +42,8 @@ dependencies {
 
     compile 'com.jfoenix:jfoenix:9.0.10'
 
+    compile group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '4.7.0-9.1.2'
+
 }
 compileKotlin {
     kotlinOptions {
