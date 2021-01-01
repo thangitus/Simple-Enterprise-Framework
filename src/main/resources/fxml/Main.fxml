@@ -29,7 +29,7 @@
                         <Font size="14.0" />
                      </font>
                   </JFXPasswordField>
-                  <JFXTextField focusColor="#006a8b" labelFloat="true" layoutX="37.0" layoutY="236.0" prefHeight="38.0" prefWidth="400.0" promptText="Database URI" text="jdbc:mysql://localhost:3306">
+                  <JFXTextField fx:id="edtDatabaseUri" focusColor="#006a8b" labelFloat="true" layoutX="37.0" layoutY="236.0" prefHeight="38.0" prefWidth="400.0" promptText="Database URI" text="jdbc:mysql://localhost:3306">
                      <font>
                         <Font size="14.0" />
                      </font>
