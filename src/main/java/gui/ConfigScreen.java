@@ -3,6 +3,7 @@ package gui;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import gradleGenerate.GradleGen;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,9 +14,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import orm.SqlDatabase;
+import orm.SqlServer;
+import orm.Table;
+import orm.config.PersistenceConfig;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,6 +44,7 @@ public class ConfigScreen implements Initializable {
     @FXML
     private JFXButton browseButton;
 
+    private SqlServer sqlServer;
     @FXML
     void chooseFolder(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -50,8 +57,26 @@ public class ConfigScreen implements Initializable {
 
     @FXML
     void generate(ActionEvent event) {
-        // Do something
-        Utils.setAlert(root, "Oops... Something wrong", "Can't process database");
+        String databaseName = databaseComboBox.getSelectionModel().getSelectedItem();
+        SqlDatabase sqlDatabase = sqlServer.connectToDatabase(databaseName);
+        String pathDest = destinationInput.getText() + databaseName;
+        File fileDest = new File(pathDest);
+        if (sqlDatabase != null) {
+            sqlDatabase.generate(fileDest);
+        }
+
+        List<String> entityClasses = new ArrayList<>();
+
+        sqlDatabase.getTableList().stream().map(Table::getClassName).forEach(entityClasses::add);
+
+        PersistenceConfig persistenceConfig =
+                new PersistenceConfig(entityClasses, sqlServer.getUser(), sqlServer.getPassword(), SqlServer.className,
+                                      sqlServer.getBaseUrl() + "/" + databaseName);
+        persistenceConfig.generate(new File(pathDest + "\\persistence.xml"));
+
+        GradleGen gradleGen = new GradleGen();
+        gradleGen.generate(fileDest);
+
     }
 
     ObservableList<String> databaseList;
@@ -60,6 +85,9 @@ public class ConfigScreen implements Initializable {
         databaseComboBox.setItems(FXCollections.observableArrayList(databaseList));
     }
 
+    public void setSqlServer(SqlServer sqlServer) {
+        this.sqlServer = sqlServer;
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         databaseComboBox.setItems(databaseList);

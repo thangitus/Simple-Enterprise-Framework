@@ -3,7 +3,7 @@ package orm
 import java.sql.*
 
 
-class SqlServer(private val user: String, private val password: String, private val baseUrl: String) {
+class SqlServer(val user: String, val password: String, val baseUrl: String) {
     companion object {
         const val className = "com.mysql.cj.jdbc.Driver"
     }

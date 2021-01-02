@@ -51,6 +51,7 @@ public class LoginScreen implements Initializable {
         Parent root = loader.load();
         ConfigScreen configScreen = loader.getController();
         configScreen.setDatabaseList(databases);
+        configScreen.setSqlServer(sqlServer);
         Scene scene = new Scene(root);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
