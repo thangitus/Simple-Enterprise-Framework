@@ -4,7 +4,6 @@ import com.squareup.javapoet.*
 import generator.Generatable
 import org.apache.commons.io.FileUtils
 import java.io.File
-import java.sql.Connection
 import java.sql.DriverManager
 import javax.lang.model.element.Modifier
 import javax.persistence.EntityManager
@@ -12,10 +11,14 @@ import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
 class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: String) : Generatable {
-    val tableList: MutableList<Table>
+    lateinit var tableList: MutableList<Table>
     private val jdbcUrl = "${sqlServer.baseUrl}/$databaseName"
 
     init {
+        getTableListFromDb()
+    }
+
+    private fun getTableListFromDb() {
         tableList = ArrayList()
         val connection =
             DriverManager.getConnection(jdbcUrl, sqlServer.user, sqlServer.password)
@@ -30,13 +33,20 @@ class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: St
     }
 
 
-    override fun generate(directory: File) {
+    override fun generate(rootProject: File) {
+        createTableUser()
+        getTableListFromDb()
+
+        val sourceFolder = File(rootProject.absolutePath + "\\src\\main\\java")
         for (table in tableList)
-            table.generate(directory)
+            table.generate(sourceFolder)
 
-        generateBaseDao(directory)
-        generateEntityManagerProvider(directory)
+        generateBaseDao(sourceFolder)
+        generateEntityManagerProvider(sourceFolder)
 
+    }
+
+    private fun createTableUser() {
         val connection =
             DriverManager.getConnection(jdbcUrl, sqlServer.user, sqlServer.password)
         val loginCreator = LoginCreator(connection)

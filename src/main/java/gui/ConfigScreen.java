@@ -61,9 +61,7 @@ public class ConfigScreen implements Initializable {
         SqlDatabase sqlDatabase = sqlServer.connectToDatabase(databaseName);
         String pathDest = destinationInput.getText() + databaseName;
         File fileDest = new File(pathDest);
-        if (sqlDatabase != null) {
-            sqlDatabase.generate(fileDest);
-        }
+        sqlDatabase.generate(fileDest);
 
         List<String> entityClasses = new ArrayList<>();
 
