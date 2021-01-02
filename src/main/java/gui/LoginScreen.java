@@ -36,20 +36,16 @@ public class LoginScreen implements Initializable {
     private JFXButton btnLogin;
 
     public void connectToDatabase(ActionEvent event) throws IOException {
-//        String user = edtUsername.getText();
-//        String pass = edtPassword.getText();
-//        String baseUrl = edtDatabaseUri.getText();
-//        SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
-//        List<String> databases = sqlServer.connectToServer();
-//        for (String database : databases) {
-//            System.out.println(database);
-//        }
-//        if (databases.isEmpty())
-//            Utils.setAlert(root, "Oops... Something wrong", "Can't connect to database");
+        String user = edtUsername.getText();
+        String pass = edtPassword.getText();
+        String baseUrl = edtDatabaseUri.getText();
+        SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
+        List<String> databases = sqlServer.connectToServer();
 
-        List<String> databases = new ArrayList<>();
-        databases.add("Production");
-        databases.add("Testing");
+        if (databases.isEmpty()) {
+            Utils.setAlert(root, "Oops... Something wrong", "Can't connect to database");
+            return;
+        }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ConfigScreen.fxml"));
         Parent root = loader.load();
