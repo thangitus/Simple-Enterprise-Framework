@@ -26,14 +26,8 @@ class SqlServer(val user: String, val password: String, val baseUrl: String) {
         return databases
     }
 
-    fun connectToDatabase(schema: String): SqlDatabase? {
-        try {
-            val connection = DriverManager.getConnection("$baseUrl/$schema", user, password)
-            return SqlDatabase(connection)
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        return null
+    fun connectToDatabase(schema: String): SqlDatabase {
+        return SqlDatabase(this, schema)
     }
 
 }

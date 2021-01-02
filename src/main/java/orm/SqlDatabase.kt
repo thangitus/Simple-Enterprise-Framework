@@ -5,16 +5,21 @@ import generator.Generatable
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.sql.Connection
+import java.sql.DriverManager
 import javax.lang.model.element.Modifier
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
-class SqlDatabase(connection: Connection) : Generatable {
+class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: String) : Generatable {
     val tableList: MutableList<Table>
+    private val jdbcUrl = "${sqlServer.baseUrl}/$databaseName"
 
     init {
         tableList = ArrayList()
+        val connection =
+            DriverManager.getConnection(jdbcUrl, sqlServer.user, sqlServer.password)
+
         val metadata = connection.metaData
         val resultSet = metadata.getTables(connection.catalog, null, "%", null)
         while (resultSet.next()) {
@@ -32,6 +37,10 @@ class SqlDatabase(connection: Connection) : Generatable {
         generateBaseDao(directory)
         generateEntityManagerProvider(directory)
 
+        val connection =
+            DriverManager.getConnection(jdbcUrl, sqlServer.user, sqlServer.password)
+        val loginCreator = LoginCreator(connection)
+        loginCreator.createTableUser()
     }
 
     private fun generateBaseDao(directory: File) {
