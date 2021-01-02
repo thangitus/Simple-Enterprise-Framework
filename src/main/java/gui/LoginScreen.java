@@ -1,9 +1,11 @@
 package gui;
 
 import com.jfoenix.controls.*;
-import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -12,9 +14,12 @@ import javafx.stage.Stage;
 import orm.SqlServer;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class LoginScreen extends Application {
+public class LoginScreen implements Initializable {
     @FXML
     private StackPane root;
 
@@ -30,42 +35,32 @@ public class LoginScreen extends Application {
     @FXML
     private JFXButton btnLogin;
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginScreen.fxml"));
+    public void connectToDatabase(ActionEvent event) throws IOException {
+//        String user = edtUsername.getText();
+//        String pass = edtPassword.getText();
+//        String baseUrl = edtDatabaseUri.getText();
+//        SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
+//        List<String> databases = sqlServer.connectToServer();
+//        for (String database : databases) {
+//            System.out.println(database);
+//        }
+//        if (databases.isEmpty())
+//            Utils.setAlert(root, "Oops... Something wrong", "Can't connect to database");
+
+        List<String> databases = new ArrayList<>();
+        databases.add("Production");
+        databases.add("Testing");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ConfigScreen.fxml"));
+        Parent root = loader.load();
+        ConfigScreen configScreen = loader.getController();
+        configScreen.setDatabaseList(databases);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/css/Main.css").toExternalForm());
-        primaryStage.setTitle("Database Connection");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
     }
 
-    public void connectToDatabase() {
-        String user = edtUsername.getText();
-        String pass = edtPassword.getText();
-        String baseUrl = edtDatabaseUri.getText();
-        SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
-        List<String> databases = sqlServer.connectToServer();
-        for (String database : databases) {
-            System.out.println(database);
-        }
-        if (databases.isEmpty())
-            setAlert("Oops... Something wrong", "Can't connect to database");
-    }
-
-    private void setAlert(String heading, String message) {
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text(heading));
-        content.setBody(new Text(message));
-        JFXDialog dialog = new JFXDialog(root, content, JFXDialog.DialogTransition.CENTER);
-        JFXButton button = new JFXButton("OK");
-        button.setOnAction(event -> dialog.close());
-        content.setActions(button);
-        dialog.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
     }
 }

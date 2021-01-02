@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ConfigScreen">
+<StackPane fx:id="root" fx:controller="gui.ConfigScreen" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #006A8B, #39BBAC);">
          <children>
@@ -21,20 +21,20 @@
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="btnLogin" buttonType="RAISED" layoutX="40.0" layoutY="270.0" onAction="#connectToDatabase" prefHeight="36.0" prefWidth="400.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Xây dựng" textAlignment="CENTER">
+                  <JFXButton fx:id="generateButton" buttonType="RAISED" layoutX="40.0" layoutY="270.0" onAction="#generate" prefHeight="36.0" prefWidth="400.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Xây dựng" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXComboBox layoutX="37.0" layoutY="102.0" prefHeight="38.0" prefWidth="400.0" promptText="Chọn database" />
+                  <JFXComboBox fx:id="databaseComboBox" focusColor="#006a8b" layoutX="37.0" layoutY="102.0" prefHeight="38.0" prefWidth="400.0" promptText="Chọn database" />
                   <HBox layoutX="37.0" layoutY="181.0" prefWidth="400.0">
                      <children>
-                        <JFXTextField labelFloat="true" prefHeight="38.0" prefWidth="334.0" promptText="Nơi lưu trữ">
+                        <JFXTextField fx:id="destinationInput" focusColor="#006a8b" labelFloat="true" prefHeight="38.0" prefWidth="334.0" promptText="Nơi lưu trữ">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </JFXTextField>
-                        <JFXButton buttonType="RAISED" prefHeight="38.0" prefWidth="65.0" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="Chọn..." />
+                        <JFXButton fx:id="browseButton" buttonType="RAISED" onAction="#chooseFolder" prefHeight="38.0" prefWidth="65.0" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="Chọn..." />
                      </children>
                   </HBox>
                </children>
