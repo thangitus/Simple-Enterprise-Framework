@@ -1,6 +1,7 @@
 package gui;
 
 import com.jfoenix.controls.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginScreen implements Initializable {
@@ -35,26 +37,36 @@ public class LoginScreen implements Initializable {
     @FXML
     private JFXButton btnLogin;
 
-    public void connectToDatabase(ActionEvent event) throws IOException {
+    public void connectToDatabase(ActionEvent event) {
         String user = edtUsername.getText();
         String pass = edtPassword.getText();
         String baseUrl = edtDatabaseUri.getText();
-        SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
-        List<String> databases = sqlServer.connectToServer();
 
-        if (databases.isEmpty()) {
-            Utils.setAlert(root, "Oops... Something wrong", "Can't connect to database");
-            return;
-        }
+        new Thread(() -> {
+            SqlServer sqlServer = new SqlServer(user, pass, baseUrl);
+            List<String> databases = sqlServer.connectToServer();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ConfigScreen.fxml"));
-        Parent root = loader.load();
-        ConfigScreen configScreen = loader.getController();
-        configScreen.setDatabaseList(databases);
-        configScreen.setSqlServer(sqlServer);
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+            if (databases.isEmpty()) {
+                Platform.runLater(() -> {
+                    Utils.setAlert(root, "Oops... Something wrong", "Can't connect to database");
+                });
+            } else {
+                Platform.runLater(() -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ConfigScreen.fxml"));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ConfigScreen configScreen = loader.getController();
+                    configScreen.setDatabaseList(databases);
+                    Scene scene = new Scene(Objects.requireNonNull(root));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(scene);
+                });
+            }
+        }).start();
     }
 
     @Override
