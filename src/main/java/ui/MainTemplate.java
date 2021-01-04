@@ -11,6 +11,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainTemplate extends Application {
 
     private double x, y;
@@ -43,6 +47,24 @@ public class MainTemplate extends Application {
         stage.setIconified(true);
     }
 
+    private Map<String, Class> getDao(){
+        HashMap<String, Class> res = new HashMap<>();
+        // test get dao
+        File folderDao = new File("C:\\Users\\nghia\\Desktop\\KHTN-4-1\\OOP\\hibernate\\src\\main\\java\\dao");
+
+        for (String element: folderDao.list()) {
+            System.out.println(element.substring(0,element.length() - 5));
+//            try{
+//
+//                Class a = Class.forName(element.substring(0,element.length() - 5));
+//                System.out.println(a.getFields().length);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+        }
+        return res;
+    };
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainTemplate.fxml"));
@@ -56,6 +78,7 @@ public class MainTemplate extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+//        launch(args);
+        new MainTemplate().getDao();
     }
 }
