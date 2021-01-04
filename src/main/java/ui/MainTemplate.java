@@ -1,17 +1,27 @@
 package ui;
 
+import com.jfoenix.controls.JFXScrollPane;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class MainTemplate extends Application {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MainTemplate extends Application implements Initializable {
+
+    @FXML
+    JFXScrollPane scroll;
 
     private double x, y;
 
@@ -57,5 +67,10 @@ public class MainTemplate extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
