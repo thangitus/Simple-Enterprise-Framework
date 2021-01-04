@@ -18,6 +18,8 @@ import orm.SqlDatabase;
 import orm.SqlServer;
 import orm.Table;
 import orm.config.PersistenceConfig;
+import ui.generator.ResGenerator;
+import ui.generator.UIGenerator;
 
 import java.io.File;
 import java.net.URL;
@@ -74,6 +76,10 @@ public class ConfigScreen implements Initializable {
 
         GradleGen gradleGen = new GradleGen();
         gradleGen.generate(fileDest);
+
+        // Generate UI
+        new ResGenerator().generate(fileDest);
+        new UIGenerator().generate(fileDest);
 
     }
 
