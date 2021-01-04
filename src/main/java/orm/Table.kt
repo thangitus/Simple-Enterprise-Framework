@@ -35,7 +35,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
     }
 
     override fun generate(directory: File) {
-        generateEntities(directory)
+        generateEntity(directory)
         this.generateDao(directory);
     }
 
@@ -45,7 +45,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
         typeSpecBuilder.superclass(
             ParameterizedTypeName.get(
                 ClassName.get("dao", "BaseDao"),
-                TypeVariableName.get(className),
+                ClassName.get("entity", className),
                 TypeVariableName.get(getSimpleClassNamePrimaryKey())
             )
         )
@@ -67,7 +67,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
     }
 
 
-    private fun generateEntities(directory: File) {
+    private fun generateEntity(directory: File) {
         val fieldSpecs: MutableList<FieldSpec> = ArrayList()
         val methodSpecs: MutableList<MethodSpec> = ArrayList()
         columnList.forEach {
@@ -77,6 +77,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
         }
 
         val typeSpecBuilder = TypeSpec.classBuilder(className)
+            .addModifiers(Modifier.PUBLIC)
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
             .addMember("name", "\$S", tableName)
