@@ -15,7 +15,7 @@ public class Main extends Application {
         Parent root = loader.load();
         LoginScreen login = loader.getController();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/css/Main.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/MainTemplate.css").toExternalForm());
         primaryStage.setTitle("CRUD Generation");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

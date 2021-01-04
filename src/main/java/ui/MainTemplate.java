@@ -1,8 +1,7 @@
-package  ui;
+package ui;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -12,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class Main extends Application {
+public class MainTemplate extends Application {
 
     private double x, y;
 
@@ -46,7 +45,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainTemplate.fxml"));
         primaryStage.setTitle("CRUD Framework version 1.0");
         primaryStage.centerOnScreen();
         Scene scene = new Scene(root);
