@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@../css/MainTemplate.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainTemplate">
+    <children>
+        <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0">
+            <top>
+                <HBox fx:id="titleBar" alignment="CENTER_RIGHT" onMouseDragged="#handleDragged" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
+                            <children>
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <HBox.margin>
+                                        <Insets right="10.0" />
+                                    </HBox.margin>
+                                    <image>
+                                        <Image url="@../images/database-storage.png" />
+                                    </image>
+                                </ImageView>
+                                <Label id="appTitle" text="CRUD Project Version 1.0" />
+                            </children>
+                        </HBox>
+                        <JFXButton id="minimizeButton" buttonType="RAISED" onAction="#minimize" prefHeight="24.0" prefWidth="24.0" styleClass="titleBarButton" />
+                        <JFXButton id="closeButton" buttonType="RAISED" onAction="#close" prefHeight="24.0" prefWidth="24.0" styleClass="titleBarButton">
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <center>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <top>
+                        <HBox fx:id="toolBar" alignment="CENTER" prefWidth="1280.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <ImageView fitHeight="52.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/logo.png" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets />
+                                    </HBox.margin>
+                                </ImageView>
+                                <JFXTextField focusColor="#006a8b" prefHeight="25.0" prefWidth="750.0">
+                                    <HBox.margin>
+                                        <Insets left="40.0" right="10.0" />
+                                    </HBox.margin>
+                                </JFXTextField>
+                                <JFXButton buttonType="RAISED" style="-fx-background-color: #ffffff;" text="Search">
+                                    <HBox.margin>
+                                        <Insets right="40.0" />
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton buttonType="RAISED" style="-fx-background-color: #ffffff;" text="Settings">
+                                    <HBox.margin>
+                                        <Insets right="20.0" />
+                                    </HBox.margin>
+                                </JFXButton>
+                                <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../images/profile-picture.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                            </padding>
+                            <BorderPane.margin>
+                                <Insets />
+                            </BorderPane.margin>
+                        </HBox>
+                    </top>
+                    <left>
+                        <VBox fx:id="leftPane" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <effect>
+                                <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                            </effect>
+                            <children>
+                                <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                                    <children>
+                                        <Label text="Database: ">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets right="5.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                        <Label text="%table%" />
+                                    </children>
+                                </HBox>
+                                <Label text="Table(s):">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                                <JFXListView prefHeight="664.0" prefWidth="176.0" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </left>
+                    <right>
+                        <VBox fx:id="rightPane" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <effect>
+                                <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                            </effect>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                            <children>
+                                <HBox>
+                                    <children>
+                                        <Label text="Table:">
+                                            <HBox.margin>
+                                                <Insets right="5.0" />
+                                            </HBox.margin>
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="%table%" />
+                                    </children>
+                                </HBox>
+                                <ScrollPane hbarPolicy="NEVER">
+                                    <content>
+                                        <VBox alignment="TOP_CENTER" prefHeight="1000.0" prefWidth="166.0">
+                                            <children>
+                                                %field%
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="18.0" left="8.0" right="8.0" top="18.0" />
+                                            </padding></VBox>
+                                    </content>
+                                    <VBox.margin>
+                                        <Insets bottom="8.0" top="4.0" />
+                                    </VBox.margin>
+                                </ScrollPane>
+                                <HBox alignment="CENTER">
+                                    <children>
+                                        <JFXButton buttonType="RAISED" style="-fx-background-color: #ffffff;" text="Cancel">
+                                            <HBox.margin>
+                                                <Insets right="8.0" />
+                                            </HBox.margin>
+                                        </JFXButton>
+                                        <JFXButton buttonType="RAISED" style="-fx-background-color: #ffffff;" text="Restore">
+                                            <HBox.margin>
+                                                <Insets right="8.0" />
+                                            </HBox.margin>
+                                        </JFXButton>
+                                        <JFXButton buttonType="RAISED" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="OK" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </right>
+                    <center>
+                        <VBox fx:id="centerPane" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                            <effect>
+                                <InnerShadow color="#00000033" height="20.76" offsetY="3.0" radius="4.8" width="0.0" />
+                            </effect>
+                            <children>
+                                <JFXButton style="-fx-border-color: #006A8B; -fx-border-radius: 3; -fx-background-color: #ffffff; -fx-text-fill: #006A8B;" text="Tùy chọn cột" />
+                                <JFXTreeTableView prefHeight="657.0" prefWidth="860.0">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </JFXTreeTableView>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </center>
+                </BorderPane>
+            </center>
+        </BorderPane>
+    </children>
+    <padding>
+        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+    </padding>
+</StackPane>

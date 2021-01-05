@@ -14,10 +14,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import orm.Column;
 import orm.SqlDatabase;
 import orm.SqlServer;
 import orm.Table;
 import orm.config.PersistenceConfig;
+import ui.generator.FXMLGenerator;
 import ui.generator.ResGenerator;
 import ui.generator.UIGenerator;
 
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ConfigScreen implements Initializable {
     @FXML
@@ -79,8 +82,15 @@ public class ConfigScreen implements Initializable {
 
         // Generate UI
         new ResGenerator().generate(fileDest);
-        new UIGenerator().generate(fileDest);
+        //new UIGenerator().generate(fileDest);
 
+        for (Table table:sqlDatabase.getTableList()) {
+            new FXMLGenerator(table.getTableName(), null,
+                    table.getColumnList()
+                            .stream()
+                            .map(Column::getFieldName).collect(Collectors.toList()))
+                    .generate(new File(fileDest + "\\src\\main\\resources\\fxml\\"+table.getTableName()+"_ui.fxml"));
+        }
     }
 
     ObservableList<String> databaseList;
