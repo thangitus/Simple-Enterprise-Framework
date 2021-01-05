@@ -52,7 +52,7 @@ public class FXMLGenerator implements Generatable {
         String strListTable = listTable
                 .stream()
                 .map(table ->
-                        "<Label>" + table + "</Label>" + "\n"
+                               " <Label text=\""+table+"\" onMouseClicked=\"#switch_"+table+"_Scene\"/>\n"
                 )
                 .reduce("", (a, b) -> a + b);
 

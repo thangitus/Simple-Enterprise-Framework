@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@../css/MainTemplate.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainTemplate">
+<StackPane style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@../css/MainTemplate.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.scene.%table%Scene">
     <children>
         <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0">
             <top>
@@ -186,7 +186,7 @@
                             </effect>
                             <children>
                                 <JFXButton style="-fx-border-color: #006A8B; -fx-border-radius: 3; -fx-background-color: #ffffff; -fx-text-fill: #006A8B;" text="Tùy chọn cột" />
-                                <JFXTreeTableView prefHeight="657.0" prefWidth="860.0">
+                                <JFXTreeTableView fx:id="table" prefHeight="657.0" prefWidth="860.0">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>

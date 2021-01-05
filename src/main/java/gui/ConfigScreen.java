@@ -19,9 +19,7 @@ import orm.SqlDatabase;
 import orm.SqlServer;
 import orm.Table;
 import orm.config.PersistenceConfig;
-import ui.generator.FXMLGenerator;
-import ui.generator.ResGenerator;
-import ui.generator.UIGenerator;
+import ui.generator.*;
 
 import java.io.File;
 import java.net.URL;
@@ -82,9 +80,16 @@ public class ConfigScreen implements Initializable {
 
         // Generate UI
         new ResGenerator().generate(fileDest);
+        new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui").mkdir();
+        new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
+        new File(fileDest.getAbsolutePath() +"\\src\\main\\java\\ui\\viewmodel").mkdir();
+        System.out.println(fileDest.getAbsolutePath() +"\\src\\main\\java\\ui\\viewmodel");
         //new UIGenerator().generate(fileDest);
 
         List<String> listTableName = sqlDatabase.tableList.stream().map(Table::getTableName).collect(Collectors.toList());
+
+        new UIGenerator(listTableName.get(0))
+                .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\Main.java"));
 
         for (Table table:sqlDatabase.getTableList()) {
             new FXMLGenerator(table.getTableName(),
@@ -92,8 +97,23 @@ public class ConfigScreen implements Initializable {
                     table.getColumnList()
                             .stream()
                             .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest + "\\src\\main\\resources\\fxml\\"+table.getTableName()+"_ui.fxml"));
+                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\"+table.getTableName()+"Scene.fxml"));
+
+
+            new SceneGenerator(table.getTableName(), listTableName,
+                    table.getColumnList()
+                            .stream()
+                            .map(Column::getFieldName).collect(Collectors.toList()))
+                    .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\"+table.getTableName()+"Scene.java"));
+
+            new ViewModelGenerator(table.getTableName(),
+                    table.getColumnList()
+                            .stream()
+                            .map(Column::getFieldName).collect(Collectors.toList()))
+                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\"+table.getTableName()+"ViewModel.java"));
         }
+
+
     }
 
     ObservableList<String> databaseList;

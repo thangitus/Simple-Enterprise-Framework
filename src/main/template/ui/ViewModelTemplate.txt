@@ -1,0 +1,13 @@
+package ui.viewmodel;
+
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.SimpleStringProperty;
+
+public class %table%ViewModel extends RecursiveTreeObject<%table%ViewModel> {
+
+    %field%
+
+    %constructor%
+
+    %support%
+}
