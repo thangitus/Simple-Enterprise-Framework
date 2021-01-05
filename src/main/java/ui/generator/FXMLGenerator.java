@@ -13,12 +13,12 @@ import java.util.List;
 
 public class FXMLGenerator implements Generatable {
     private String table;
-    //private List<String> listEntity; //TODO Gen sau
+    private List<String> listTable;
     private List<String> listField;
 
-    public FXMLGenerator(String table, List<String> listEntity, List<String> listField) {
+    public FXMLGenerator(String table, List<String> listTable, List<String> listField) {
         this.table = table;
-        //this.listEntity = listEntity;
+        this.listTable = listTable;
         this.listField = listField;
     }
 
@@ -49,10 +49,18 @@ public class FXMLGenerator implements Generatable {
                 )
                 .reduce("", (a, b) -> a + b);
 
+        String strListTable = listTable
+                .stream()
+                .map(table ->
+                        "<Label>" + table + "</Label>" + "\n"
+                )
+                .reduce("", (a, b) -> a + b);
+
         String finalPersistenceContent = builder.toString();
 
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%field%", strField);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%table%", table);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%listTable%", strListTable);
 
         try {
             FileWriter myWriter = new FileWriter(directory);
