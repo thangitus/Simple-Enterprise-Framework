@@ -84,8 +84,11 @@ public class ConfigScreen implements Initializable {
         new ResGenerator().generate(fileDest);
         //new UIGenerator().generate(fileDest);
 
+        List<String> listTableName = sqlDatabase.tableList.stream().map(Table::getTableName).collect(Collectors.toList());
+
         for (Table table:sqlDatabase.getTableList()) {
-            new FXMLGenerator(table.getTableName(), null,
+            new FXMLGenerator(table.getTableName(),
+                    listTableName,
                     table.getColumnList()
                             .stream()
                             .map(Column::getFieldName).collect(Collectors.toList()))
