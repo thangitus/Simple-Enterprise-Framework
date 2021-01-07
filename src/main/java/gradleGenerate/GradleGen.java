@@ -25,21 +25,19 @@ public class GradleGen implements Generatable {
         try {
             FileUtils.copyDirectory(source, directory);
 
-            Path path = Paths.get(directory.getPath(), "settings.gradle");
-            StringBuilder builder = new StringBuilder("");
 
+            //Change settings.gradle project name
+            Path settingPath = Paths.get(directory.getPath(), "settings.gradle");
+            StringBuilder builder = new StringBuilder("");
             try {
-                Files.lines(path).forEach((line) -> {
+                Files.lines(settingPath).forEach((line) -> {
                     builder.append(line + "\n");
                 });
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             String settingFinal = builder.toString();
-
             settingFinal = StringUtils.replace(settingFinal, "%ProjectName%", projectName);
-
             try {
                 FileWriter myWriter = new FileWriter(directory + "\\settings.gradle");
                 myWriter.write(settingFinal);
