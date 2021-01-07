@@ -54,7 +54,7 @@ class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: St
     }
 
     private fun generateBaseDao(directory: File) {
-        val baseDao = File("src\\main\\resources\\BaseDao.java")
+        val baseDao = File("src\\main\\resources\\dao\\BaseDao.java")
         val dstFile = File(directory.absolutePath + "\\dao\\BaseDao.java")
         FileUtils.copyFile(baseDao, dstFile)
     }
