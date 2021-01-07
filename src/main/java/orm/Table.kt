@@ -4,6 +4,7 @@ import generator.Generatable
 import java.io.File
 import java.sql.Connection
 import java.sql.ResultSet
+import java.io.Serializable
 import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.text.WordUtils
@@ -77,7 +78,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
         }
 
         val typeSpecBuilder = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC)
+            .addModifiers(Modifier.PUBLIC).addSuperinterface(Serializable::class.java)
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
             .addMember("name", "\$S", tableName)
