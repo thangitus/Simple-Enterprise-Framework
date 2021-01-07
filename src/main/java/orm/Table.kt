@@ -80,8 +80,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
         }
 
         val typeSpecBuilder = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC)
-                .addSuperinterface(Serializable::class.java);
+            .addModifiers(Modifier.PUBLIC).addSuperinterface(Serializable::class.java)
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
             .addMember("name", "\$S", tableName)
