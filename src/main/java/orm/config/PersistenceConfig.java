@@ -33,7 +33,7 @@ public class PersistenceConfig implements Generatable {
 
     @Override
     public void generate(File directory) {
-        Path path = Paths.get("src\\main\\java\\orm\\config\\PersistenceTemplate.txt");
+        Path path = Paths.get("src\\main\\resources\\template\\PersistenceTemplate.txt");
         StringBuilder builder = new StringBuilder("");
 
         // Read persistence template file

@@ -1,3 +1,0 @@
-include ':ORM'
-rootProject.name = 'Simple-Enterprise-Framework-Generated'
-

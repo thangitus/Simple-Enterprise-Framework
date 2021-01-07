@@ -77,7 +77,7 @@ public class ConfigScreen implements Initializable {
         metaInfFolder.mkdirs();
         persistenceConfig.generate(metaInfFolder);
 
-        GradleGen gradleGen = new GradleGen();
+        GradleGen gradleGen = new GradleGen(databaseName);
         gradleGen.generate(fileDest);
 
         // Generate UI
