@@ -7,6 +7,7 @@ import java.sql.ResultSet
 import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.text.WordUtils
+import java.io.Serializable
 import java.sql.Statement
 import javax.lang.model.element.Modifier
 import javax.persistence.*
@@ -40,7 +41,9 @@ class Table(val tableName: String, connection: Connection) : Generatable {
     }
 
     private fun generateDao(directory: File) {
-        val typeSpecBuilder = TypeSpec.classBuilder(className + "Dao")
+        val typeSpecBuilder = TypeSpec
+                .classBuilder(className + "Dao")
+                .addModifiers(Modifier.PUBLIC)
 
         typeSpecBuilder.superclass(
             ParameterizedTypeName.get(
@@ -78,12 +81,14 @@ class Table(val tableName: String, connection: Connection) : Generatable {
 
         val typeSpecBuilder = TypeSpec.classBuilder(className)
             .addModifiers(Modifier.PUBLIC)
+                .addSuperinterface(Serializable::class.java);
         typeSpecBuilder.addAnnotation(Entity::class.java)
         val tableAnnotation = AnnotationSpec.builder(Table::class.java)
             .addMember("name", "\$S", tableName)
             .build()
 
         typeSpecBuilder.addAnnotation(tableAnnotation)
+
         typeSpecBuilder.addFields(fieldSpecs)
         typeSpecBuilder.addMethods(methodSpecs)
         JavaFile.builder("entity", typeSpecBuilder.build())

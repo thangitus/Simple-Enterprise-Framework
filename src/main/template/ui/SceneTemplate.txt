@@ -73,11 +73,10 @@ public class %table%Scene implements Initializable {
         %table%Dao dao = new %table%Dao();
         List<%table%> list = dao.getAll();
 
-        list.stream().map(model -> data.add(new %table%ViewModel(
-                %getField%
-        )));
-
-        //data.add(new %table%ViewModel("1", "Nguyen Tuan Dat", "10"));
+        for (%table% model : list) {
+                    data.add(new %table%ViewModel(
+                %getField%));
+        }
     }
 
     @Override
