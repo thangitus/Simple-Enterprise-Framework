@@ -1,5 +1,3 @@
-package template.templateGradle
-
 include ':ORM'
 rootProject.name = '%ProjectName%'
 

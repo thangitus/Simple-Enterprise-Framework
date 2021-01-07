@@ -1,13 +1,10 @@
-package template.templateGradle
-
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'java-library'
 }
-
+compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
 }
@@ -33,17 +30,10 @@ dependencies {
 
     compile 'com.jfoenix:jfoenix:9.0.10'
     compile group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '4.7.0-9.1.2'
-}
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    // https://mvnrepository.com/artifact/org.jetbrains/annotations
+    compile group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
+
 }
 
 javafx{
