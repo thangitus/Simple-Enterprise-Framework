@@ -2,6 +2,7 @@ package ui.generator;
 
 import generator.Generatable;
 import org.apache.commons.lang3.StringUtils;
+import ui.ToolUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -44,7 +45,7 @@ public class SceneGenerator implements Generatable {
                         "public void switch_"+table+"_Scene(MouseEvent event) {\n" +
                                 "        Platform.runLater(() -> {\n" +
                                 "            System.out.println(\"Switch to "+table+"\");\n" +
-                                "            FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/fxml/"+table+"Scene.fxml\"));\n" +
+                                "            FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/fxml/"+table.toLowerCase()+"Scene.fxml\"));\n" +
                                 "            Parent root = null;\n" +
                                 "            try {\n" +
                                 "                root = loader.load();\n" +
@@ -63,8 +64,8 @@ public class SceneGenerator implements Generatable {
         String column = field
                 .stream()
                 .map(field ->
-                        " TreeTableColumn<"+table+"ViewModel, String> col_"+field+" = new JFXTreeTableColumn<>(\""+field+"\");\n" +
-                                "        col_"+field+".setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().get"+field+"()));\n\n\t\t"
+                        " TreeTableColumn<"+table+"ViewModel, String> col_"+field+" = new JFXTreeTableColumn<>(\""+ ToolUtils.convertProp(field)+"\");\n" +
+                                "        col_"+field+".setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().get"+ToolUtils.convertProp(field)+"()));\n\n\t\t"
                 )
                 .reduce("", (a, b) -> a + b);
 
@@ -78,6 +79,15 @@ public class SceneGenerator implements Generatable {
             addColumn = addColumn.substring(0, addColumn.length() - 2);
         }
 
+        String getField = field
+                .stream()
+                .map(field->
+                        "                model.get" + ToolUtils.convertProp(field) + "().toString(),\n"
+                )
+                .reduce("", (a, b) -> a + b);
+        getField = getField.substring(0, getField.length()-2);
+
+
 
         String finalPersistenceContent = builder.toString();
 
@@ -85,6 +95,7 @@ public class SceneGenerator implements Generatable {
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%switchFunction%", switchFunction);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%column%", column);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%addColumn%", addColumn);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getField%", getField);
 
 
         try {

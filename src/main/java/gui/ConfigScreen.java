@@ -86,31 +86,31 @@ public class ConfigScreen implements Initializable {
         System.out.println(fileDest.getAbsolutePath() +"\\src\\main\\java\\ui\\viewmodel");
         //new UIGenerator().generate(fileDest);
 
-        List<String> listTableName = sqlDatabase.tableList.stream().map(Table::getTableName).collect(Collectors.toList());
+        List<String> listTableName = sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
 
-        new UIGenerator(listTableName.get(0))
+        new UIGenerator(sqlDatabase.tableList.get(0).getClassName())
                 .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\Main.java"));
 
         for (Table table:sqlDatabase.getTableList()) {
-            new FXMLGenerator(table.getTableName(),
+            new FXMLGenerator(table.getClassName(),
                     listTableName,
                     table.getColumnList()
                             .stream()
                             .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\"+table.getTableName()+"Scene.fxml"));
+                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\"+table.getClassName().toLowerCase()+"Scene.fxml"));
 
 
-            new SceneGenerator(table.getTableName(), listTableName,
+            new SceneGenerator(table.getClassName(), listTableName,
                     table.getColumnList()
                             .stream()
                             .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\"+table.getTableName()+"Scene.java"));
+                    .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\"+table.getClassName()+"Scene.java"));
 
-            new ViewModelGenerator(table.getTableName(),
+            new ViewModelGenerator(table.getClassName(),
                     table.getColumnList()
                             .stream()
                             .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\"+table.getTableName()+"ViewModel.java"));
+                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\"+table.getClassName()+"ViewModel.java"));
         }
 
 

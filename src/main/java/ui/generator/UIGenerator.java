@@ -35,7 +35,7 @@ public class UIGenerator implements Generatable {
 
         String finalPersistenceContent = builder.toString();
 
-        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%demo%", demoByFirstTable);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%demo%", demoByFirstTable.toLowerCase());
 
 
         try {

@@ -21,9 +21,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.viewmodel.*;
+import dao.%table%Dao;
+import entity.%table%;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -67,12 +70,15 @@ public class %table%Scene implements Initializable {
     %switchFunction%
 
     private void initData() {
-        //data.add(new %table%ViewModel("1", "Nguyen Tuan Dat", "10"));
-        //data.add(new %table%ViewModel("2", "Ngo Minh Nghia", "10"));
-        //data.add(new %table%ViewModel("3", "Nguyen Van Thang", "10"));
-        //data.add(new %table%ViewModel("4", "Nguyen Bao Phat", "10"));
-    }
+        %table%Dao dao = new %table%Dao();
+        List<%table%> list = dao.getAll();
 
+        list.stream().map(model -> data.add(new %table%ViewModel(
+                %getField%
+        )));
+
+        //data.add(new %table%ViewModel("1", "Nguyen Tuan Dat", "10"));
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

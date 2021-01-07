@@ -2,6 +2,7 @@ package ui.generator;
 
 import generator.Generatable;
 import org.apache.commons.lang3.StringUtils;
+import ui.ToolUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -46,13 +47,13 @@ public class ViewModelGenerator implements Generatable {
         String support = listField
                 .stream()
                 .map(field ->
-                        "public String get"+field+"() {\n" +
+                        "public String get"+ ToolUtils.convertProp(field)+"() {\n" +
                                 "        return "+field+".get();\n" +
                                 "    }\n"+
-                                "    public SimpleStringProperty "+field+"Property() {\n" +
+                                "    public SimpleStringProperty "+ToolUtils.convertProp(field)+"Property() {\n" +
                                 "        return "+field+";\n" +
                                 "    }\n" +
-                                "    public void set"+field+"(String field1) {\n" +
+                                "    public void set"+ToolUtils.convertProp(field)+"(String field1) {\n" +
                                 "        this."+field+".set(field1);\n" +
                                 "    }\n\n\t"
                 )
