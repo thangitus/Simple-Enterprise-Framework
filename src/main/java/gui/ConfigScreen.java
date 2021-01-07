@@ -72,7 +72,7 @@ public class ConfigScreen implements Initializable {
                                       sqlServer.getBaseUrl() + "/" + databaseName);
         persistenceConfig.generate(new File(pathDest + "\\persistence.xml"));
 
-        GradleGen gradleGen = new GradleGen();
+        GradleGen gradleGen = new GradleGen(databaseName);
         gradleGen.generate(fileDest);
 
     }

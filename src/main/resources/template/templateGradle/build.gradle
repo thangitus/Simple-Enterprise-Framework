@@ -1,3 +1,5 @@
+package template.templateGradle
+
 plugins {
     id 'java-library'
 }
