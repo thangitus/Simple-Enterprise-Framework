@@ -73,7 +73,9 @@ public class ConfigScreen implements Initializable {
         PersistenceConfig persistenceConfig =
                 new PersistenceConfig(entityClasses, sqlServer.getUser(), sqlServer.getPassword(), SqlServer.className,
                                       sqlServer.getBaseUrl() + "/" + databaseName);
-        persistenceConfig.generate(new File(pathDest + "\\persistence.xml"));
+        File metaInfFolder = new File(pathDest + "\\src\\main\\resources\\META-INF");
+        metaInfFolder.mkdirs();
+        persistenceConfig.generate(metaInfFolder);
 
         GradleGen gradleGen = new GradleGen();
         gradleGen.generate(fileDest);
@@ -82,37 +84,33 @@ public class ConfigScreen implements Initializable {
         new ResGenerator().generate(fileDest);
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
-        new File(fileDest.getAbsolutePath() +"\\src\\main\\java\\ui\\viewmodel").mkdir();
-        System.out.println(fileDest.getAbsolutePath() +"\\src\\main\\java\\ui\\viewmodel");
+        new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel").mkdir();
+        System.out.println(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel");
         //new UIGenerator().generate(fileDest);
 
-        List<String> listTableName = sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
+        List<String> listTableName =
+                sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
 
         new UIGenerator(sqlDatabase.tableList.get(0).getClassName())
                 .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\Main.java"));
 
-        for (Table table:sqlDatabase.getTableList()) {
-            new FXMLGenerator(table.getClassName(),
-                    listTableName,
-                    table.getColumnList()
-                            .stream()
-                            .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\"+table.getClassName().toLowerCase()+"Scene.fxml"));
-
+        for (Table table : sqlDatabase.getTableList()) {
+            new FXMLGenerator(table.getClassName(), listTableName,
+                              table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
+                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\" +
+                                               table.getClassName().toLowerCase() + "Scene.fxml"));
 
             new SceneGenerator(table.getClassName(), listTableName,
-                    table.getColumnList()
-                            .stream()
-                            .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\"+table.getClassName()+"Scene.java"));
+                               table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
+                    .generate(new File(
+                            fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\" + table.getClassName() +
+                                    "Scene.java"));
 
-            new ViewModelGenerator(table.getClassName(),
-                    table.getColumnList()
-                            .stream()
-                            .map(Column::getFieldName).collect(Collectors.toList()))
-                    .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\"+table.getClassName()+"ViewModel.java"));
+            new ViewModelGenerator(table.getClassName(), table.getColumnList().stream().map(Column::getFieldName)
+                                                              .collect(Collectors.toList())).generate(new File(
+                    fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\" + table.getClassName() +
+                            "ViewModel.java"));
         }
-
 
     }
 

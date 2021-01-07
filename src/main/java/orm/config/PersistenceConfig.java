@@ -46,10 +46,8 @@ public class PersistenceConfig implements Generatable {
         }
 
         // Convert entity classes name to right format
-        String entities = entityClasses
-                .stream()
-                .map(classEntity -> "<class>entity." + classEntity + "</class>")
-                .reduce("", (a, b) -> a + b);
+        String entities = entityClasses.stream().map(classEntity -> "<class>entity." + classEntity + "</class>\n")
+                                       .reduce("", (a, b) -> a + b);
 
         String finalPersistenceContent = builder.toString();
 
@@ -60,7 +58,7 @@ public class PersistenceConfig implements Generatable {
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%url%", url);
 
         try {
-            FileWriter myWriter = new FileWriter(directory);
+            FileWriter myWriter = new FileWriter(directory + "\\persistence.xml");
             myWriter.write(finalPersistenceContent);
             myWriter.close();
         } catch (IOException e) {
