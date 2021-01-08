@@ -1,4 +1,4 @@
-package orm
+package orm.table
 
 import generator.Generatable
 import java.io.File
@@ -7,22 +7,26 @@ import java.sql.ResultSet
 import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.text.WordUtils
+import orm.SqlDatabase
+import orm.column.Column
 import java.io.Serializable
+import java.lang.StringBuilder
+import java.sql.DriverManager
 import java.sql.Statement
 import javax.lang.model.element.Modifier
 import javax.persistence.*
 import javax.persistence.Table
 
-class Table(val tableName: String, connection: Connection) : Generatable {
-    val className: String
-    val columnList: MutableList<Column>
+class Table() : Generatable {
+    var tableName = String()
+    var className = String()
+    var columnList: MutableList<Column> = ArrayList()
 
-    init {
+    constructor(tableName: String, connection: Connection) : this() {
         className = WordUtils.capitalize(tableName, '_', ' ')
             .replace("_", "")
             .replace("", "")
 
-        columnList = ArrayList()
         val statement: Statement = connection.createStatement()
         val results: ResultSet = statement.executeQuery("SELECT * FROM $tableName")
 
@@ -35,6 +39,7 @@ class Table(val tableName: String, connection: Connection) : Generatable {
         }
     }
 
+
     override fun generate(directory: File) {
         generateEntity(directory)
         this.generateDao(directory);
@@ -42,8 +47,8 @@ class Table(val tableName: String, connection: Connection) : Generatable {
 
     private fun generateDao(directory: File) {
         val typeSpecBuilder = TypeSpec
-                .classBuilder(className + "Dao")
-                .addModifiers(Modifier.PUBLIC)
+            .classBuilder(className + "Dao")
+            .addModifiers(Modifier.PUBLIC)
 
         typeSpecBuilder.superclass(
             ParameterizedTypeName.get(
@@ -100,5 +105,25 @@ class Table(val tableName: String, connection: Connection) : Generatable {
                 return it.getSimpleClassName()
         }
         return ""
+    }
+
+    fun addToDatabase(database: SqlDatabase): Boolean {
+        val connection =
+            DriverManager.getConnection(database.jdbcUrl, database.sqlServer.user, database.sqlServer.password)
+
+        val statement = connection.createStatement()
+        return statement.execute(createTableSql())
+    }
+
+    private fun createTableSql(): String {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("CREATE TABLE IF NOT EXISTS $tableName (")
+        for (i in 0 until columnList.size) {
+            stringBuilder.append(columnList[i].toSql())
+            if (i != columnList.size - 1)
+                stringBuilder.append(',')
+        }
+        stringBuilder.append(')')
+        return stringBuilder.toString()
     }
 }

@@ -1,12 +1,12 @@
-package orm
+package orm.column
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
-import org.apache.commons.lang3.text.WordUtils
 import org.jetbrains.annotations.NotNull
+import java.lang.StringBuilder
 import javax.lang.model.element.Modifier
 import javax.persistence.Column
 import javax.persistence.GeneratedValue
@@ -14,15 +14,20 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 
-class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
-    var className: String = resultSetMetaData.getColumnClassName(column)
-    var columnName: String = resultSetMetaData.getColumnName(column)
-    var isAutoIncrement: Boolean = resultSetMetaData.isAutoIncrement(column)
-    var isNullable: Boolean = resultSetMetaData.isNullable(column) != 0
-    var isPrimaryKey: Boolean = resultSetMetaData.fields[column - 1].isPrimaryKey
-    var fieldName: String
+class Column() {
+    lateinit var className: String
+    lateinit var columnName: String
+    var isAutoIncrement: Boolean = false
+    var isNullable: Boolean = false
+    var isPrimaryKey: Boolean = false
+    lateinit var fieldName: String
 
-    init {
+    constructor(resultSetMetaData: ResultSetMetaData, column: Int) : this() {
+        className = resultSetMetaData.getColumnClassName(column)
+        columnName = resultSetMetaData.getColumnName(column)
+        isAutoIncrement = resultSetMetaData.isAutoIncrement(column)
+        isNullable = resultSetMetaData.isNullable(column) != 0
+        isPrimaryKey = resultSetMetaData.fields[column - 1].isPrimaryKey
         fieldName = Character.toLowerCase(columnName[0]) + columnName.substring(1)
         fieldName = fieldName.replace("_", "")
         fieldName = fieldName.replace(" ", "")
@@ -54,10 +59,10 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
             .addMember("name", "\$S", columnName)
             .build()
 
-        if (isAutoIncrement)
+        if (!isNullable)
             fieldSpecBuilder.addAnnotation(AnnotationSpec.builder(NotNull::class.java).build())
 
-        if (!isNullable)
+        if (isAutoIncrement)
             fieldSpecBuilder.addAnnotation(
                 AnnotationSpec.builder(GeneratedValue::class.java)
                     .addMember("strategy", "\$T.\$L", GenerationType::class.java, GenerationType.AUTO.name).build()
@@ -88,6 +93,34 @@ class Column(resultSetMetaData: ResultSetMetaData, column: Int) {
             .addParameter(typeName, fieldName)
             .addStatement("this.\$N = \$N", fieldName, fieldName)
             .build()
+    }
 
+    fun toSql(): String {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append(columnName)
+        stringBuilder.append(" ${TypeMapping.javaTypeToSqlType(className)}")
+        if (isAutoIncrement)
+            stringBuilder.append(" AUTO_INCREMENT")
+        if (isPrimaryKey)
+            stringBuilder.append(" PRIMARY KEY")
+        if (!isNullable)
+            stringBuilder.append(" NOT NULL")
+        return stringBuilder.toString()
+    }
+}
+
+class TypeMapping {
+    companion object {
+        fun javaTypeToSqlType(javaType: String): String {
+            return when (javaType) {
+                "String" -> "VARCHAR(50)"
+                "Integer" -> "INT"
+                "Boolean" -> "BIT"
+                "Float" -> "FLOAT"
+                "Double" -> "DOUBLE"
+                "byte[]" -> "BINARY"
+                else -> ""
+            }
+        }
     }
 }

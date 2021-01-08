@@ -3,6 +3,9 @@ package orm
 import com.squareup.javapoet.*
 import generator.Generatable
 import org.apache.commons.io.FileUtils
+import orm.column.ColumnBuilder
+import orm.table.Table
+import orm.table.TableBuilder
 import java.io.File
 import java.sql.DriverManager
 import javax.lang.model.element.Modifier
@@ -10,9 +13,9 @@ import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
-class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: String) : Generatable {
+class SqlDatabase(val sqlServer: SqlServer, private val databaseName: String) : Generatable {
     lateinit var tableList: MutableList<Table>
-    private val jdbcUrl = "${sqlServer.baseUrl}/$databaseName"
+    val jdbcUrl = "${sqlServer.baseUrl}/$databaseName"
 
     init {
         getTableListFromDb()
@@ -41,16 +44,19 @@ class SqlDatabase(private val sqlServer: SqlServer, private val databaseName: St
         for (table in tableList)
             table.generate(sourceFolder)
 
+        tableList.removeLast()
         generateBaseDao(sourceFolder)
         generateEntityManagerProvider(sourceFolder)
 
     }
 
     private fun createTableUser() {
-        val connection =
-            DriverManager.getConnection(jdbcUrl, sqlServer.user, sqlServer.password)
-        val loginCreator = LoginCreator(connection)
-        loginCreator.createTableUser()
+        val columnUserId =
+            ColumnBuilder().setColumnName("user_id").setClassName("Integer").setAutoIncrement(true).build()
+        val columnUserName = ColumnBuilder().setColumnName("username").setClassName("String").setNullable(false).build()
+        val columnPassword = ColumnBuilder().setColumnName("password").setClassName("String").setNullable(false).build()
+        val table = TableBuilder().setTableName("users").addColumn(columnUserId).addColumn(columnUserName).addColumn(columnPassword).build()
+        table.addToDatabase(this)
     }
 
     private fun generateBaseDao(directory: File) {

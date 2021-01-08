@@ -14,10 +14,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import orm.Column;
+import orm.column.Column;
 import orm.SqlDatabase;
 import orm.SqlServer;
-import orm.Table;
+import orm.table.Table;
 import orm.config.PersistenceConfig;
 import ui.generator.*;
 
