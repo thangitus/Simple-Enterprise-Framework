@@ -72,6 +72,7 @@ public class %table%Scene implements Initializable {
     private void initData() {
         %table%Dao dao = new %table%Dao();
         List<%table%> list = dao.getAll();
+        dao.close();
 
         for (%table% model : list) {
                     data.add(new %table%ViewModel(
@@ -81,8 +82,6 @@ public class %table%Scene implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initData();
-
         %column%
 
         TreeItem<%table%ViewModel> root = new RecursiveTreeItem<>(data, RecursiveTreeObject::getChildren);
@@ -91,5 +90,6 @@ public class %table%Scene implements Initializable {
         table.setEditable(false);
         table.getColumns().setAll(%addColumn%);
 
+        new Thread(this::initData).start();
     }
 }
