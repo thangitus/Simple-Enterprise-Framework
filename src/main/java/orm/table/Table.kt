@@ -23,6 +23,7 @@ class Table() : Generatable {
     var columnList: MutableList<Column> = ArrayList()
 
     constructor(tableName: String, connection: Connection) : this() {
+        this.tableName = tableName
         className = WordUtils.capitalize(tableName, '_', ' ')
             .replace("_", "")
             .replace("", "")
