@@ -56,9 +56,4 @@ compileTestKotlin {
     }
 }
 
-//javafx{
-//    modules = ['javafx.controls', 'javafx.fxml']
-//    version = '15.0.1'
-//}
-
 mainClassName = 'ui.main.Main'

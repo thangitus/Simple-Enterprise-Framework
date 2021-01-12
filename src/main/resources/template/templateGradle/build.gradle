@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    //id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'java-library'
 }
 compileJava.options.encoding = 'UTF-8'
@@ -28,7 +28,7 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0-b170201.1204'
 
-    compile 'com.jfoenix:jfoenix:9.0.10'
+    compile 'com.jfoenix:jfoenix:8.0.10'
     compile group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '4.7.0-9.1.2'
 
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
@@ -36,7 +36,7 @@ dependencies {
 
 }
 
-javafx{
-    modules = ['javafx.controls', 'javafx.fxml']
-    version = '15.0.1'
-}
+//javafx{
+//    modules = ['javafx.controls', 'javafx.fxml']
+//    version = '15.0.1'
+//}

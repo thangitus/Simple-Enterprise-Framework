@@ -43,6 +43,12 @@ public class SceneGenerator implements Generatable {
                 .stream()
                 .map(table ->
                         "public void switch_"+table+"_Scene(MouseEvent event) {\n" +
+                                "    new Thread(()->{\n" +
+                                "        try {\n" +
+                                "            Thread.sleep(150);\n" +
+                                "        } catch (InterruptedException e) {\n" +
+                                "            e.printStackTrace();\n" +
+                                "        }\n" +
                                 "        Platform.runLater(() -> {\n" +
                                 "            System.out.println(\"Switch to "+table+"\");\n" +
                                 "            FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/fxml/"+table.toLowerCase()+"Scene.fxml\"));\n" +
@@ -57,6 +63,7 @@ public class SceneGenerator implements Generatable {
                                 "            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();\n" +
                                 "            stage.setScene(scene);\n" +
                                 "        });\n" +
+                                "       }).start();\n" +
                                 "   }\n\n\t"
                 )
                 .reduce("", (a, b) -> a + b);
@@ -87,10 +94,26 @@ public class SceneGenerator implements Generatable {
                 .reduce("", (a, b) -> a + b);
         getField = getField.substring(0, getField.length()-2);
 
+        String annotationFXML = field
+                .stream()
+                .map(field->
+                        "@FXML\n" +
+                                "    JFXTextField edt_"+ field +";"
+                )
+                .reduce("", (a, b) -> a + b);
+
+        String getFieldOfData = field
+                .stream()
+                .map(field-> "this.edt_"+field+".setText(data.get(index).get"+ToolUtils.convertProp(field)+"());"
+                )
+                .reduce("", (a, b) -> a + b);
+
 
 
         String finalPersistenceContent = builder.toString();
 
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getFieldOfData%", getFieldOfData);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%annotationFXML%", annotationFXML);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%table%", table);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%switchFunction%", switchFunction);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%column%", column);

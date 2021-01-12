@@ -41,7 +41,7 @@ public class FXMLGenerator implements Generatable {
         String strField = listField
                 .stream()
                 .map(field ->
-                                "<JFXTextField fx:id=\"EDT" + field + "\" focusColor=\"#006a8b\" labelFloat=\"true\" promptText=\"" + field + "\">" + "\n"
+                                "<JFXTextField fx:id=\"edt_" + field + "\" focusColor=\"#006a8b\" labelFloat=\"true\" promptText=\"" + field + "\">" + "\n"
                                                     +"<VBox.margin>" +"\n"
                                                     +    "<Insets bottom=\"24.0\" />" +"\n"
                                                     +"</VBox.margin>" + "\n"
@@ -52,7 +52,7 @@ public class FXMLGenerator implements Generatable {
         String strListTable = listTable
                 .stream()
                 .map(table ->
-                               " <Label text=\""+table+"\" onMouseClicked=\"#switch_"+table+"_Scene\"/>\n"
+                               " <Label text=\""+table+"\" onMouseClicked=\"#switch_"+table+"_Scene\" prefHeight=\"32.0\" prefWidth=\"176.0\" />\n"
                 )
                 .reduce("", (a, b) -> a + b);
 
