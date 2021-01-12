@@ -138,3 +138,29 @@
 .scroll-pane .corner {
     -fx-background-insets: 0;
 }
+
+.list-cell {
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+}
+
+.list-cell .label {
+    -fx-padding: 10;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+}
+
+.tree-table-cell {
+    -fx-label-padding: 10;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
