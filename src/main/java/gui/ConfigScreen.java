@@ -23,9 +23,7 @@ import ui.generator.*;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfigScreen implements Initializable {
@@ -81,11 +79,14 @@ public class ConfigScreen implements Initializable {
         gradleGen.generate(fileDest);
 
         // Generate UI
-        new ResGenerator().generate(fileDest);
+
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel").mkdir();
+        new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\tool").mkdir();
         System.out.println(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel");
+        new ResGenerator().generate(fileDest);
+        new ToolGenerator().generate(fileDest);
         //new UIGenerator().generate(fileDest);
 
         List<String> listTableName =
@@ -100,8 +101,13 @@ public class ConfigScreen implements Initializable {
                     .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\" +
                                                table.getClassName().toLowerCase() + "Scene.fxml"));
 
-            new SceneGenerator(table.getClassName(), listTableName,
-                               table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
+            Map<String, String> a = new LinkedHashMap<>();
+            table.getColumnList().forEach((value)->a.put(value.fieldName, value.className));
+
+            new SceneGenerator(
+                    table.getClassName(),
+                    listTableName,
+                    a)
                     .generate(new File(
                             fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\scene\\" + table.getClassName() +
                                     "Scene.java"));

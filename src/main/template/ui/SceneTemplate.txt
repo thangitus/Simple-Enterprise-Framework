@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ui.tool.ConvertUtil;
 import ui.viewmodel.*;
 import dao.%table%Dao;
 import entity.%table%;
@@ -159,6 +160,9 @@ public class %table%Scene implements Initializable {
         boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
             // TODO: delete
+            int index = table.getSelectionModel().getSelectedIndex();
+            %table%ViewModel viewModel = data.get(index);
+
             clearFields();
             this.rightPane.setDisable(true);
         }
@@ -180,29 +184,63 @@ public class %table%Scene implements Initializable {
         }
     }
 
+    private %table%ViewModel getViewModel(){
+        return new %table%ViewModel(%getFieldToCreateVM%
+        );
+    }
+
+    // TODO Convert from ViewModel to Entity for using
+    private %table% convertFromViewModelToEntity(%table%ViewModel model){
+        %table% res = new %table%();
+
+%getFieldToConvertEntity%
+
+        return res;
+    }
+
     public void approveModify(ActionEvent event) {
         // Add or update
         if (isUpdate) {
             // TODO update database
-            showDialog("Success", "Update database success");
+            try{
+                %table%Dao dao = new %table%Dao();
+                dao.delete(convertFromViewModelToEntity(data.get(table.getSelectionModel().getSelectedIndex())));
+                dao.insert(convertFromViewModelToEntity(getViewModel()));
+                dao.insert(convertFromViewModelToEntity(getViewModel()));
+                fetchData();
+                showDialog("Success", "Add database success");
+                //dao.close();
+            } catch (Exception e){
+                showDialog("Failed", "Add database failed");
+                e.printStackTrace();
+            }
         } else {
-            // TODO add database
-            showDialog("Success", "Add database success");
+            try{
+                %table%Dao dao = new %table%Dao();
+                dao.insert(convertFromViewModelToEntity(getViewModel()));
+                fetchData();
+                showDialog("Success", "Add database success");
+                //dao.close();
+            } catch (Exception e){
+                showDialog("Failed", "Add database failed");
+                e.printStackTrace();
+            }
         }
     }
 
     %switchFunction%
 
     private void fetchData() {
+        data.removeAll(data);
         new Thread(()->{
             %table%Dao dao = new %table%Dao();
                     List<%table%> list = dao.getAll();
 
                     for (%table% model : list) {
-                                data.add(new %table%ViewModel(
-                            %getField%));
+                        data.add(new %table%ViewModel(
+                        %getField%));
                     }
-                    dao.close();
+                   //dao.close();
         }).start();
     }
 

@@ -12,16 +12,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SceneGenerator implements Generatable {
     String table;
     List<String> listTable;
+    Map<String, String> columnMap;
     List<String> field;
+    List<String> fieldClass;
 
-    public SceneGenerator(String table, List<String> listTable, List<String> field) {
+    public SceneGenerator(String table, List<String> listTable, Map<String, String> column) {
         this.table = table;
         this.listTable = listTable;
-        this.field = field;
+        this.columnMap = column;
+        this.field = new ArrayList<String>();
+        this.field.addAll(columnMap.keySet());
+        this.fieldClass =  new ArrayList<String>();
+        this.fieldClass.addAll(columnMap.values());
+
     }
 
     @Override
@@ -104,14 +112,28 @@ public class SceneGenerator implements Generatable {
 
         String getFieldOfData = field
                 .stream()
-                .map(field-> "this.edt_"+field+".setText(data.get(index).get"+ToolUtils.convertProp(field)+"());"
+                .map(field-> "\t\t\tthis.edt_"+field+".setText(data.get(index).get"+ToolUtils.convertProp(field)+"());"
+                )
+                .reduce("", (a, b) -> a + b);
+
+        String getFieldToCreateVM = field
+                .stream()
+                .map(field-> "\n\t\t\tthis.edt_"+field+".getText(),"
+                )
+                .reduce("", (a, b) -> a + b);
+        getFieldToCreateVM = getFieldToCreateVM.substring(0,getFieldToCreateVM.length() - 1);
+
+        String getFieldToConvertEntity = field
+                .stream()
+                .map(field-> "\t\tres.set"+ToolUtils.convertProp(field)+"(("+columnMap.get(field)+") new ConvertUtil().ConvertToObject(\""+columnMap.get(field)+"\", model.get"+ToolUtils.convertProp(field)+"()));\n"
                 )
                 .reduce("", (a, b) -> a + b);
 
 
-
         String finalPersistenceContent = builder.toString();
 
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getFieldToConvertEntity%", getFieldToConvertEntity);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getFieldToCreateVM%", getFieldToCreateVM);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getFieldOfData%", getFieldOfData);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%annotationFXML%", annotationFXML);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%table%", table);
@@ -130,13 +152,6 @@ public class SceneGenerator implements Generatable {
         }
     }
     public static void main(String[] args) {
-        List<String> test = new ArrayList<String>();
-        test.add("monhoc");
-        test.add("hocsinh");
 
-        List<String> test1 = new ArrayList<String>();
-        test1.add("monhoc");
-        test1.add("hocsinh");
-        new SceneGenerator("monhoc", test, test1).generate(new File("./test.java"));
     }
 }

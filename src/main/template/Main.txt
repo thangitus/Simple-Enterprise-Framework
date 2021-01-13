@@ -178,7 +178,7 @@
                                                 <Insets right="8.0" />
                                             </HBox.margin>
                                         </JFXButton>
-                                        <JFXButton fx:id="approveButton" buttonType="RAISED" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="OK" />
+                                        <JFXButton fx:id="approveButton" onAction="#approveModify" buttonType="RAISED" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="OK" />
                                     </children>
                                 </HBox>
                             </children>
