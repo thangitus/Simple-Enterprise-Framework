@@ -4,7 +4,7 @@ public class ConvertUtil {
     final ConvertedMap convertedMap;
     private IConverted convertor;
 
-    ConvertUtil(){
+    public ConvertUtil(){
         convertedMap = new ConvertedMap();
         convertor = new StringConverted();
     }
@@ -17,7 +17,8 @@ public class ConvertUtil {
         }
     }
 
-    public Object ConvertToObject(String value){
+    public Object ConvertToObject(String type, String value){
+        setConvertor(type);
        return convertor.convertEntity(value);
     }
 }
