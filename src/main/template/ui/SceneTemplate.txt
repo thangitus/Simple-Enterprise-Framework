@@ -62,6 +62,7 @@ public class %table%Scene implements Initializable {
     JFXButton approveButton;
 
     private ObservableList<%table%ViewModel> data = FXCollections.observableArrayList();
+    private List<%table%> list;
 
     boolean isUpdate = true;
 
@@ -204,8 +205,7 @@ public class %table%Scene implements Initializable {
             // TODO update database
             try{
                 %table%Dao dao = new %table%Dao();
-                dao.delete(convertFromViewModelToEntity(data.get(table.getSelectionModel().getSelectedIndex())));
-                dao.insert(convertFromViewModelToEntity(getViewModel()));
+                dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
                 showDialog("Success", "Add database success");
@@ -234,7 +234,7 @@ public class %table%Scene implements Initializable {
         data.removeAll(data);
         new Thread(()->{
             %table%Dao dao = new %table%Dao();
-                    List<%table%> list = dao.getAll();
+                    list = dao.getAll();
 
                     for (%table% model : list) {
                         data.add(new %table%ViewModel(
@@ -246,6 +246,8 @@ public class %table%Scene implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fetchData();
+
         %column%
 
         TreeItem<%table%ViewModel> root = new RecursiveTreeItem<>(data, RecursiveTreeObject::getChildren);
@@ -257,7 +259,5 @@ public class %table%Scene implements Initializable {
         if (this.table.getSelectionModel().getSelectedIndex() == -1) {
             this.rightPane.setDisable(true);
         }
-
-        fetchData();
     }
 }

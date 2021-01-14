@@ -26,6 +26,8 @@ import ui.viewmodel.ViewModelTemplate;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -277,6 +279,9 @@ public class SceneTemplate implements Initializable {
         data.add(new ViewModelTemplate("2", "Ngo Minh Nghia", "10"));
         data.add(new ViewModelTemplate("3", "Nguyen Van Thang", "10"));
         data.add(new ViewModelTemplate("4", "Nguyen Bao Phat", "10"));
+
+//        List<String> list = new ArrayList<>();
+//        list.ge
     }
 
     @Override
