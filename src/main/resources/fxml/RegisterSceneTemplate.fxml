@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" style="-fx-background-color: rgba(0,0,0,0);" stylesheets="@../css/MainTemplate.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.scene.RegisterSceneTemplate">
+   <children>
+      <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0">
+         <top>
+            <HBox fx:id="titleBar" alignment="CENTER_RIGHT" onMouseDragged="#handleDragged" onMousePressed="#handlePressed" onMouseReleased="#handleReleased" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="1140.0">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../images/database-storage.png" />
+                           </image>
+                        </ImageView>
+                        <Label id="appTitle" text="CRUD Project Version 1.0" />
+                     </children>
+                  </HBox>
+                  <JFXButton id="minimizeButton" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#minimize" prefHeight="24.0" prefWidth="24.0" styleClass="titleBarButton" />
+                  <JFXButton id="closeButton" buttonType="RAISED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#close" prefHeight="24.0" prefWidth="24.0" styleClass="titleBarButton">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <AnchorPane prefHeight="768.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(from 0% 50% to 0% 100%, #2EACB6, #006A8B); -fx-background-radius: 0 0 10 10;">
+               <children>
+                  <AnchorPane fx:id="pneCenter" layoutX="418.0" layoutY="140.0" prefHeight="445.0" prefWidth="443.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #ffffff; -fx-background-radius: 10;">
+                     <children>
+                        <Label layoutX="167.0" layoutY="32.0" text="REGISTER" textAlignment="CENTER" textFill="#525252">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="username" focusColor="#006a8b" labelFloat="true" layoutX="42.0" layoutY="95.0" prefHeight="38.0" prefWidth="360.0" promptText="Username">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXPasswordField fx:id="password" focusColor="#006a8b" labelFloat="true" layoutX="42.0" layoutY="173.0" prefHeight="38.0" prefWidth="360.0" promptText="Password">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <JFXButton fx:id="registerButton" buttonType="RAISED" layoutX="42.0" layoutY="326.0" onAction="#register" prefHeight="36.0" prefWidth="360.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Register" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="loginButton" layoutX="42.0" layoutY="372.0" onAction="#login" prefHeight="36.0" prefWidth="360.0" style="-fx-border-color: #006A8B; -fx-border-radius: 3; -fx-background-color: #FFFFFF; -fx-text-fill: #006A8B;" text="Login" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXPasswordField fx:id="confirmPassword" focusColor="#006a8b" labelFloat="true" layoutX="42.0" layoutY="250.0" prefHeight="38.0" prefWidth="360.0" promptText="Confirm password">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXPasswordField>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+   <padding>
+      <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+   </padding>
+</StackPane>
