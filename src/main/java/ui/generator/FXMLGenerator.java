@@ -12,11 +12,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FXMLGenerator implements Generatable {
+    private String database;
     private String table;
     private List<String> listTable;
     private List<String> listField;
 
-    public FXMLGenerator(String table, List<String> listTable, List<String> listField) {
+    public FXMLGenerator(String database, String table, List<String> listTable, List<String> listField) {
+        this.database = database;
         this.table = table;
         this.listTable = listTable;
         this.listField = listField;
@@ -61,6 +63,7 @@ public class FXMLGenerator implements Generatable {
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%field%", strField);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%table%", table);
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%listTable%", strListTable);
+        finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%database%", database);
 
         try {
             FileWriter myWriter = new FileWriter(directory);

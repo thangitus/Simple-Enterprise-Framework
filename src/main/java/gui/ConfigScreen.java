@@ -95,8 +95,9 @@ public class ConfigScreen implements Initializable {
         new UIGenerator(sqlDatabase.tableList.get(0).getClassName())
                 .generate(new File(fileDest.getAbsoluteFile() + "\\src\\main\\java\\ui\\Main.java"));
 
+        System.out.println(databaseName);
         for (Table table : sqlDatabase.getTableList()) {
-            new FXMLGenerator(table.getClassName(), listTableName,
+            new FXMLGenerator(databaseName, table.getClassName(), listTableName,
                               table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
                     .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\" +
                                                table.getClassName().toLowerCase() + "Scene.fxml"));
