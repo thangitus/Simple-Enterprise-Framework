@@ -143,6 +143,7 @@ public class SceneGenerator implements Generatable {
         finalPersistenceContent = StringUtils.replace(finalPersistenceContent, "%getField%", getField);
 
 
+
         try {
             FileWriter myWriter = new FileWriter(directory);
             myWriter.write(finalPersistenceContent);

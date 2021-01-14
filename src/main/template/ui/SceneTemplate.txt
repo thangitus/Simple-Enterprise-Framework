@@ -62,6 +62,7 @@ public class %table%Scene implements Initializable {
     JFXButton approveButton;
 
     private ObservableList<%table%ViewModel> data = FXCollections.observableArrayList();
+    private List<%table%> list;
 
     boolean isUpdate = true;
 
@@ -159,12 +160,20 @@ public class %table%Scene implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
-            // TODO: delete
-            int index = table.getSelectionModel().getSelectedIndex();
-            %table%ViewModel viewModel = data.get(index);
+            // Delete
+             try{
+                %table%Dao dao = new %table%Dao();
+                dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
+                fetchData();
+                showDialog("Success", "Delete in database success");
 
-            clearFields();
-            this.rightPane.setDisable(true);
+                clearFields();
+                this.rightPane.setDisable(true);
+            } catch (Exception e){
+                showDialog("Failed", "Delete in database failed");
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -189,7 +198,7 @@ public class %table%Scene implements Initializable {
         );
     }
 
-    // TODO Convert from ViewModel to Entity for using
+    // Convert from ViewModel to Entity for using
     private %table% convertFromViewModelToEntity(%table%ViewModel model){
         %table% res = new %table%();
 
@@ -201,17 +210,15 @@ public class %table%Scene implements Initializable {
     public void approveModify(ActionEvent event) {
         // Add or update
         if (isUpdate) {
-            // TODO update database
             try{
                 %table%Dao dao = new %table%Dao();
-                dao.delete(convertFromViewModelToEntity(data.get(table.getSelectionModel().getSelectedIndex())));
-                dao.insert(convertFromViewModelToEntity(getViewModel()));
+                dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
-                showDialog("Success", "Add database success");
+                showDialog("Success", "Edit database success");
                 //dao.close();
             } catch (Exception e){
-                showDialog("Failed", "Add database failed");
+                showDialog("Failed", "Edit database failed");
                 e.printStackTrace();
             }
         } else {
@@ -234,7 +241,7 @@ public class %table%Scene implements Initializable {
         data.removeAll(data);
         new Thread(()->{
             %table%Dao dao = new %table%Dao();
-                    List<%table%> list = dao.getAll();
+                    list = dao.getAll();
 
                     for (%table% model : list) {
                         data.add(new %table%ViewModel(
@@ -246,6 +253,8 @@ public class %table%Scene implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        fetchData();
+
         %column%
 
         TreeItem<%table%ViewModel> root = new RecursiveTreeItem<>(data, RecursiveTreeObject::getChildren);
@@ -257,7 +266,5 @@ public class %table%Scene implements Initializable {
         if (this.table.getSelectionModel().getSelectedIndex() == -1) {
             this.rightPane.setDisable(true);
         }
-
-        fetchData();
     }
 }

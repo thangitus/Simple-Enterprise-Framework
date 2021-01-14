@@ -26,7 +26,7 @@ public abstract class BaseDao<T, E> {
     public void delete(T... objects) {
         entityManager.getTransaction().begin();
         for (T object : objects) {
-            entityManager.remove(object);
+            entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
         }
         entityManager.getTransaction().commit();
     }
