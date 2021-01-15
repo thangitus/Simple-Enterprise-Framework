@@ -3,6 +3,8 @@ package ui.scene;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import dao.UsersDao;
+import entity.Users;
 import javafx.animation.ParallelTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -130,7 +132,6 @@ public class RegisterSceneTemplate implements Initializable {
             Users user = new Users();
             user.setUsername(strUsername);
             user.setPassword(strPassword);
-            user.setUserid(1);
 
             try{
                 dao.insert(user);

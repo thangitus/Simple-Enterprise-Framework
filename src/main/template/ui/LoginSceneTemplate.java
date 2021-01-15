@@ -3,6 +3,8 @@ package ui.scene;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import dao.UsersDao;
+import entity.Users;
 import javafx.animation.ParallelTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,12 +18,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ui.tool.UserManagement;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static ui.tool.SceneUtils.getHideTransition;
+import static ui.tool.SceneUtils.*;
 
 public class LoginSceneTemplate implements Initializable {
     @FXML
@@ -78,26 +81,43 @@ public class LoginSceneTemplate implements Initializable {
     }
 
     public void login(ActionEvent event) {
+        String strUsername = this.username.getText();
+        String strPassword = this.password.getText();
+
+        // Handle not null
+        if(strUsername.isEmpty() || strPassword.isEmpty()){
+            showDialog(rootPane, "Login", "There are at least one field is empty");
+            return;
+        }
+
         new Thread(() -> {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/%demo%Scene.fxml"));
-                Parent root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            try{
+                UsersDao dao = new UsersDao();
+                Users user = dao.getById(strUsername);
+                System.out.println((user!=null)?user.getPassword():"null");
+                if(user == null || !user.getPassword().equals(strPassword)){
+                    Platform.runLater(()->showDialog(rootPane, "Login", "Username or Password are incorrect"));
+                } else {
+                    UserManagement.getInstance().login(user);
+                    Platform.runLater(() -> {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/donphuckhaoScene.fxml"));
+                        Parent root = null;
+                        try {
+                            root = loader.load();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        assert root != null;
+                        Scene scene = new Scene(root);
+                        scene.setFill(Color.TRANSPARENT);
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(scene);
+                    });
                 }
-                assert root != null;
-                Scene scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-            });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(()->showDialog(rootPane, "Login", "Login failed"));
+            }
         }).start();
     }
 
