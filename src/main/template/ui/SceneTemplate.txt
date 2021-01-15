@@ -2,6 +2,10 @@ package ui.scene;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,16 +20,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.tool.ConvertUtil;
 import ui.viewmodel.*;
+import static ui.tool.SceneUtils.*;
 import dao.%table%Dao;
 import entity.%table%;
 
@@ -60,6 +68,10 @@ public class %table%Scene implements Initializable {
     JFXButton addButton;
     @FXML
     JFXButton approveButton;
+    @FXML
+    JFXButton settingButton;
+    @FXML
+    JFXButton searchButton;
 
     private ObservableList<%table%ViewModel> data = FXCollections.observableArrayList();
     private List<%table%> list;
@@ -102,75 +114,39 @@ public class %table%Scene implements Initializable {
 
     public void close(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        ParallelTransition transition = getHideTransition(this.rootPane);
+        transition.play();
+        transition.setOnFinished(e->{
+            stage.close();
+        });
     }
 
     public void minimize(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        ParallelTransition transition = getHideTransition(this.rootPane);
+        transition.play();
+        transition.setOnFinished(e->{
         stage.setIconified(true);
-    }
-
- public boolean showConfirm(Stage stage, String title, String message) {
-        JFXAlert<String> alert = new JFXAlert<>(stage);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.setOverlayClose(false);
-
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text(title));
-        layout.setBody(new Text(message));
-
-        JFXButton okButton = new JFXButton("OK");
-        okButton.setDefaultButton(true);
-        okButton.setOnAction(addEvent -> {
-            alert.setResult("OK");
-            alert.hideWithAnimation();
+        this.rootPane.setScaleX(1.0);
+        this.rootPane.setScaleY(1.0);
+        this.rootPane.setOpacity(1.0);
         });
-
-        JFXButton cancelButton = new JFXButton("CANCEL");
-        cancelButton.setCancelButton(true);
-        cancelButton.setOnAction(closeEvent -> alert.hideWithAnimation());
-
-        layout.setActions(okButton, cancelButton);
-        alert.setContent(layout);
-
-        Optional<String> result = alert.showAndWait();
-        if (result.isPresent()){
-            if (result.get().equals("OK"))
-                return true;
-        }
-        return false;
-    }
-
-    public void showDialog(String title, String message) {
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text(title));
-        layout.setBody(new Text(message));
-
-        JFXButton okButton = new JFXButton("OK");
-        layout.setActions(okButton);
-
-        JFXDialog dialog = new JFXDialog(this.rootPane, layout, JFXDialog.DialogTransition.CENTER);
-
-        okButton.setOnAction(e-> dialog.close());
-
-        dialog.show();
     }
 
     public void deleteRow(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
-            // Delete
              try{
                 %table%Dao dao = new %table%Dao();
                 dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 fetchData();
-                showDialog("Success", "Delete in database success");
+                showDialog(this.rootPane, "Success", "Update database success");
 
                 clearFields();
                 this.rightPane.setDisable(true);
             } catch (Exception e){
-                showDialog("Failed", "Delete in database failed");
+                showDialog(this.rootPane, "Success", "Add database success");
                 e.printStackTrace();
             }
 
@@ -215,10 +191,10 @@ public class %table%Scene implements Initializable {
                 dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
-                showDialog("Success", "Edit database success");
+                showDialog(this.rootPane, "Success", "Edit database success");
                 //dao.close();
             } catch (Exception e){
-                showDialog("Failed", "Edit database failed");
+                showDialog(this.rootPane, "Failed", "Edit database failed");
                 e.printStackTrace();
             }
         } else {
@@ -226,10 +202,10 @@ public class %table%Scene implements Initializable {
                 %table%Dao dao = new %table%Dao();
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
-                showDialog("Success", "Add database success");
+                showDialog(this.rootPane, "Success", "Add database success");
                 //dao.close();
             } catch (Exception e){
-                showDialog("Failed", "Add database failed");
+                showDialog(this.rootPane, "Failed", "Add database failed");
                 e.printStackTrace();
             }
         }
@@ -254,6 +230,12 @@ public class %table%Scene implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fetchData();
+        this.rootPane.setCache(true);
+
+        this.deleteButton.setGraphic(new ImageView("/images/delete.png"));
+        this.searchButton.setGraphic(new ImageView("/images/search.png"));
+        this.settingButton.setGraphic(new ImageView("/images/settings.png"));
+        this.addButton.setGraphic(new ImageView("/images/add.png"));
 
         %column%
 

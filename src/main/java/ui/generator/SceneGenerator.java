@@ -66,6 +66,7 @@ public class SceneGenerator implements Generatable {
                                 "            } catch (IOException e) {\n" +
                                 "                e.printStackTrace();\n" +
                                 "            }\n" +
+                                "            assert root != null;" +
                                 "            Scene scene = new Scene(Objects.requireNonNull(root));\n" +
                                 "            scene.setFill(Color.TRANSPARENT);\n" +
                                 "            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();\n" +
@@ -80,6 +81,7 @@ public class SceneGenerator implements Generatable {
                 .stream()
                 .map(field ->
                         " TreeTableColumn<"+table+"ViewModel, String> col_"+field+" = new JFXTreeTableColumn<>(\""+ ToolUtils.convertProp(field)+"\");\n" +
+                                "        col_"+field+".setSortable(false);" +
                                 "        col_"+field+".setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().get"+ToolUtils.convertProp(field)+"()));\n\n\t\t"
                 )
                 .reduce("", (a, b) -> a + b);

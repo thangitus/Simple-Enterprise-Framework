@@ -44,19 +44,17 @@ class SqlDatabase(val sqlServer: SqlServer, private val databaseName: String) : 
         for (table in tableList)
             table.generate(sourceFolder)
 
-        tableList.removeLast()
         generateBaseDao(sourceFolder)
         generateEntityManagerProvider(sourceFolder)
 
     }
 
     private fun createTableUser() {
-        val columnUserId =
-            ColumnBuilder().setColumnName("user_id").setClassName("Integer").setAutoIncrement(true)
-                .setIsPrimaryKey(true).build()
-        val columnUserName = ColumnBuilder().setColumnName("username").setClassName("String").setNullable(false).build()
+        val columnUserName =
+            ColumnBuilder().setColumnName("username").setClassName("String").setNullable(false).setIsPrimaryKey(true)
+                .build()
         val columnPassword = ColumnBuilder().setColumnName("password").setClassName("String").setNullable(false).build()
-        val table = TableBuilder().setTableName("users").addColumn(columnUserId).addColumn(columnUserName)
+        val table = TableBuilder().setTableName("users").addColumn(columnUserName)
             .addColumn(columnPassword).build()
         table.addToDatabase(this)
     }

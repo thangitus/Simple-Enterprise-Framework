@@ -46,6 +46,7 @@ public class ConfigScreen implements Initializable {
     private JFXButton browseButton;
 
     private SqlServer sqlServer;
+
     @FXML
     void chooseFolder(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -70,16 +71,16 @@ public class ConfigScreen implements Initializable {
 
         PersistenceConfig persistenceConfig =
                 new PersistenceConfig(entityClasses, sqlServer.getUser(), sqlServer.getPassword(), SqlServer.className,
-                                      sqlServer.getBaseUrl() + "/" + databaseName);
+                        sqlServer.getBaseUrl() + "/" + databaseName);
         File metaInfFolder = new File(pathDest + "\\src\\main\\resources\\META-INF");
         metaInfFolder.mkdirs();
         persistenceConfig.generate(metaInfFolder);
 
         GradleGen gradleGen = new GradleGen(databaseName);
         gradleGen.generate(fileDest);
+        sqlDatabase.tableList.remove(sqlDatabase.tableList.size() - 1);
 
         // Generate UI
-
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel").mkdir();
@@ -87,7 +88,7 @@ public class ConfigScreen implements Initializable {
         System.out.println(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel");
         new ResGenerator().generate(fileDest);
         new ToolGenerator().generate(fileDest);
-        //new UIGenerator().generate(fileDest);
+        new MemberGenerator(sqlDatabase.tableList.get(0).getClassName().toLowerCase()).generate(fileDest);
 
         List<String> listTableName =
                 sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
@@ -98,12 +99,12 @@ public class ConfigScreen implements Initializable {
         System.out.println(databaseName);
         for (Table table : sqlDatabase.getTableList()) {
             new FXMLGenerator(databaseName, table.getClassName(), listTableName,
-                              table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
+                    table.getColumnList().stream().map(Column::getFieldName).collect(Collectors.toList()))
                     .generate(new File(fileDest.getAbsolutePath() + "\\src\\main\\resources\\fxml\\" +
-                                               table.getClassName().toLowerCase() + "Scene.fxml"));
+                            table.getClassName().toLowerCase() + "Scene.fxml"));
 
             Map<String, String> a = new LinkedHashMap<>();
-            table.getColumnList().forEach((value)->a.put(value.fieldName, value.className));
+            table.getColumnList().forEach((value) -> a.put(value.fieldName, value.className));
 
             new SceneGenerator(
                     table.getClassName(),
@@ -114,7 +115,7 @@ public class ConfigScreen implements Initializable {
                                     "Scene.java"));
 
             new ViewModelGenerator(table.getClassName(), table.getColumnList().stream().map(Column::getFieldName)
-                                                              .collect(Collectors.toList())).generate(new File(
+                    .collect(Collectors.toList())).generate(new File(
                     fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel\\" + table.getClassName() +
                             "ViewModel.java"));
         }
@@ -130,6 +131,7 @@ public class ConfigScreen implements Initializable {
     public void setSqlServer(SqlServer sqlServer) {
         this.sqlServer = sqlServer;
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         databaseComboBox.setItems(databaseList);
