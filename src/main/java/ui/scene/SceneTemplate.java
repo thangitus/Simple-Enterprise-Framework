@@ -2,104 +2,66 @@ package ui.scene;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Transition;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import ui.viewmodel.ViewModelTemplate;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static ui.scene.SceneUtils.*;
+import static ui.MainTemplate.LOGIN_SCENE_FXML;
+import static ui.MainTemplate.SCENE_FXML;
 
-public class SceneTemplate implements Initializable {
+public class SceneTemplate extends BaseSceneTemplate implements Initializable {
     @FXML
-    JFXTreeTableView table;
+    private JFXTreeTableView<ViewModelTemplate> table;
     @FXML
-    BorderPane mainContent;
+    private VBox fieldContainer;
     @FXML
-    VBox centerPane;
+    private JFXTextField name;
     @FXML
-    ScrollPane scrollPane;
+    private JFXTextField classroom;
     @FXML
-    VBox fieldContainer;
+    private JFXTextField id;
+//    @FXML
+//    private StackPane rootPane;
+    @FXML
+    private JFXButton deleteButton;
+    @FXML
+    private VBox rightPane;
+    @FXML
+    private JFXButton addButton;
+    @FXML
+    private JFXButton approveButton;
+    @FXML
+    private JFXButton settingButton;
+    @FXML
+    private JFXButton searchButton;
+    @FXML
+    private ImageView profilePicture;
 
-    @FXML
-    JFXTextField name;
-    @FXML
-    JFXTextField classroom;
-    @FXML
-    JFXTextField id;
-    @FXML
-    StackPane rootPane;
-    @FXML
-    JFXButton deleteButton;
-    @FXML
-    VBox rightPane;
-    @FXML
-    JFXButton addButton;
-    @FXML
-    JFXButton approveButton;
-    @FXML
-    JFXButton settingButton;
-    @FXML
-    JFXButton searchButton;
+    private final ObservableList<ViewModelTemplate> data = FXCollections.observableArrayList();
 
-    private ObservableList<ViewModelTemplate> data = FXCollections.observableArrayList();
+    private final ContextMenu contextMenu = new ContextMenu();
 
     boolean isUpdate = true;
 
-    // Custom status bar
-    private double x, y;
-
-    public void handleDragged(MouseEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setX(event.getScreenX() - 6 - x);
-        stage.setY(event.getScreenY() - 6 - y);
-    }
-
-    public void handlePressed(MouseEvent event) {
-        x = event.getX();
-        y = event.getY();
-    }
-
-    public void handleReleased(MouseEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        if (stage.getY() < 0) {
-            stage.setY(0);
-        }
-    }
-
-    public void handleMousePressed(MouseEvent event) {
+    // Handle select table
+    @FXML
+    private void handleMousePressed() {
         int index = this.table.getSelectionModel().getSelectedIndex();
         this.name.setText(data.get(index).getField1());
         this.classroom.setText(data.get(index).getField2());
@@ -113,40 +75,21 @@ public class SceneTemplate implements Initializable {
         }
     }
 
-    public void close(ActionEvent event) {
+    @FXML
+    private void deleteRow(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ParallelTransition transition = getHideTransition(this.rootPane);
-        transition.play();
-        transition.setOnFinished(e->{
-            stage.close();
-        });
-    }
-
-    public void minimize(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ParallelTransition transition = getHideTransition(this.rootPane);
-        transition.play();
-        transition.setOnFinished(e->{
-            stage.setIconified(true);
-            this.rootPane.setScaleX(1.0);
-            this.rootPane.setScaleY(1.0);
-            this.rootPane.setOpacity(1.0);
-        });
-    }
-
-    public void deleteRow(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
+        boolean result = SceneUtils.getInstance().showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
             clearFields();
             this.rightPane.setDisable(true);
         }
     }
 
-    public void addRow(ActionEvent event) {
+    @FXML
+    private void addRow() {
         this.isUpdate = false;
         this.rightPane.setDisable(false);
-        clearFields();
+        this.clearFields();
         this.deleteButton.setVisible(false);
         this.approveButton.setText("Add");
     }
@@ -159,104 +102,47 @@ public class SceneTemplate implements Initializable {
         }
     }
 
-    public void approveModify(ActionEvent event) {
+    @FXML
+    private void approveModify() {
         // Add or update
         if (isUpdate) {
             // update database
-            showDialog(this.rootPane, "Success", "Update database success");
+            SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Update database success");
         } else {
             // add database
-            showDialog(this.rootPane, "Success", "Add database success");
+            SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Add database success");
         }
     }
 
-    public void switchScene1(MouseEvent event) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                System.out.println("Switch to scene 1");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
-                Parent root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert root != null;
-                Scene scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-            });
-        }).start();
+    @FXML
+    private void switchScene1() {
+        SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
-    public void switchScene2(MouseEvent event) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                System.out.println("Switch to scene 1");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
-                Parent root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert root != null;
-                Scene scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-            });
-        }).start();
+    @FXML
+    private void switchScene2() {
+        SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
-    public void switchScene3(MouseEvent event) {
-        new Thread(() -> {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(() -> {
-                System.out.println("Switch to scene 1");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
-                Parent root = null;
-                try {
-                    root = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert root != null;
-                Scene scene = new Scene(root);
-                scene.setFill(Color.TRANSPARENT);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-            });
-        }).start();
+    @FXML
+    private void switchScene3() {
+        SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
-    private void initData() {
-        data.add(new ViewModelTemplate("1", "Nguyen Tuan Dat", "10"));
-        data.add(new ViewModelTemplate("2", "Ngo Minh Nghia", "10"));
-        data.add(new ViewModelTemplate("3", "Nguyen Van Thang", "10"));
-        data.add(new ViewModelTemplate("4", "Nguyen Bao Phat", "10"));
-
-//        List<String> list = new ArrayList<>();
-//        list.ge
+    @FXML
+    private void showContextMenu(MouseEvent event) {
+        if (!this.contextMenu.isShowing()) {
+            this.contextMenu.show(this.profilePicture, event.getScreenX(), event.getScreenY());
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Init context menu
+        MenuItem logout = new MenuItem("Logout");
+        logout.setOnAction(this::logOut);
+        this.contextMenu.getItems().add(logout);
+
         initData();
         this.rootPane.setCache(true);
 
@@ -286,5 +172,16 @@ public class SceneTemplate implements Initializable {
         if (this.table.getSelectionModel().getSelectedIndex() == -1) {
             this.rightPane.setDisable(true);
         }
+    }
+
+    private void initData() {
+        data.add(new ViewModelTemplate("1", "Nguyen Tuan Dat", "10"));
+        data.add(new ViewModelTemplate("2", "Ngo Minh Nghia", "10"));
+        data.add(new ViewModelTemplate("3", "Nguyen Van Thang", "10"));
+        data.add(new ViewModelTemplate("4", "Nguyen Bao Phat", "10"));
+    }
+
+    private void logOut(ActionEvent event) {
+        SceneUtils.getInstance().switchScreen(this.rootPane, LOGIN_SCENE_FXML, 100);
     }
 }
