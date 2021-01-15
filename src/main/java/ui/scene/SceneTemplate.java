@@ -2,6 +2,7 @@ package ui.scene;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import ui.MainTemplate;
 import ui.viewmodel.ViewModelTemplate;
 
 import java.net.URL;
@@ -52,6 +54,8 @@ public class SceneTemplate extends BaseSceneTemplate implements Initializable {
     private JFXButton searchButton;
     @FXML
     private ImageView profilePicture;
+    @FXML
+    private JFXListView tableList;
 
     private final ObservableList<ViewModelTemplate> data = FXCollections.observableArrayList();
 
@@ -116,16 +120,19 @@ public class SceneTemplate extends BaseSceneTemplate implements Initializable {
 
     @FXML
     private void switchScene1() {
+        MainTemplate.setCurrentTab(0);
         SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
     @FXML
     private void switchScene2() {
+        MainTemplate.setCurrentTab(1);
         SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
     @FXML
     private void switchScene3() {
+        MainTemplate.setCurrentTab(2);
         SceneUtils.getInstance().switchScreen(this.rootPane, SCENE_FXML, 100);
     }
 
@@ -138,6 +145,9 @@ public class SceneTemplate extends BaseSceneTemplate implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.tableList.getSelectionModel().select(MainTemplate.getCurrentTab());
+        this.tableList.getFocusModel().focus(MainTemplate.getCurrentTab());
+
         // Init context menu
         MenuItem logout = new MenuItem("Logout");
         logout.setOnAction(this::logOut);

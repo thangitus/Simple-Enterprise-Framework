@@ -13,6 +13,17 @@ public class MainTemplate extends Application {
     public static final String LOGIN_SCENE_FXML = "/fxml/LoginSceneTemplate.fxml";
     public static final String REGISTER_SCENE_FXML = "/fxml/RegisterSceneTemplate.fxml";
     public static final String SCENE_FXML = "/fxml/SceneTemplate.fxml";
+
+    private static int currentTab = 0;
+
+    public static void setCurrentTab(int currentTab) {
+        MainTemplate.currentTab = currentTab;
+    }
+
+    public static int getCurrentTab() {
+        return MainTemplate.currentTab;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource(LOGIN_SCENE_FXML));
