@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 import static ui.MainTemplate.LOGIN_SCENE_FXML;
 
-public class RegisterSceneTemplate implements Initializable {
+public class RegisterSceneTemplate extends BaseSceneTemplate implements Initializable {
     @FXML
     StackPane rootPane;
     @FXML
