@@ -45,7 +45,7 @@ public class FXMLGenerator implements Generatable {
                 .map(field ->
                                 "<JFXTextField fx:id=\"edt_" + field + "\" focusColor=\"#006a8b\" labelFloat=\"true\" promptText=\"" + field + "\">" + "\n"
                                                     +"<VBox.margin>" +"\n"
-                                                    +    "<Insets bottom=\"24.0\" />" +"\n"
+                                                    +    "<Insets />" +"\n"
                                                     +"</VBox.margin>" + "\n"
                                                 +"</JFXTextField>"
                 )

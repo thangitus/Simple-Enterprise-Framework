@@ -66,6 +66,7 @@ public class SceneGenerator implements Generatable {
                                 "            } catch (IOException e) {\n" +
                                 "                e.printStackTrace();\n" +
                                 "            }\n" +
+                                "            assert root != null;" +
                                 "            Scene scene = new Scene(Objects.requireNonNull(root));\n" +
                                 "            scene.setFill(Color.TRANSPARENT);\n" +
                                 "            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();\n" +

@@ -79,7 +79,6 @@ public class ConfigScreen implements Initializable {
         gradleGen.generate(fileDest);
 
         // Generate UI
-
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
         new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel").mkdir();
@@ -87,7 +86,7 @@ public class ConfigScreen implements Initializable {
         System.out.println(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel");
         new ResGenerator().generate(fileDest);
         new ToolGenerator().generate(fileDest);
-        //new UIGenerator().generate(fileDest);
+        new MemberGenerator(sqlDatabase.tableList.get(0).getClassName().toLowerCase()).generate(fileDest);
 
         List<String> listTableName =
                 sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
