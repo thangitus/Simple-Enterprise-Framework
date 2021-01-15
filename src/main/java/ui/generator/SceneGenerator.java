@@ -80,6 +80,7 @@ public class SceneGenerator implements Generatable {
                 .stream()
                 .map(field ->
                         " TreeTableColumn<"+table+"ViewModel, String> col_"+field+" = new JFXTreeTableColumn<>(\""+ ToolUtils.convertProp(field)+"\");\n" +
+                                "        col_"+field+".setSortable(false);" +
                                 "        col_"+field+".setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().get"+ToolUtils.convertProp(field)+"()));\n\n\t\t"
                 )
                 .reduce("", (a, b) -> a + b);
