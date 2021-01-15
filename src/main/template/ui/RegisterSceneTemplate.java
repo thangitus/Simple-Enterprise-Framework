@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static ui.tool.SceneUtils.getHideTransition;
+import static ui.tool.SceneUtils.*;
 
 public class RegisterSceneTemplate implements Initializable {
     @FXML
@@ -104,58 +104,57 @@ public class RegisterSceneTemplate implements Initializable {
     }
 
     public void register(ActionEvent event) {
-        public void register(ActionEvent event) {
-            String strUsername = this.username.getText();
-            String strPassword = this.password.getText();
-            String strConformPassword = this.confirmPassword.getText();
+        String strUsername = this.username.getText();
+        String strPassword = this.password.getText();
+        String strConformPassword = this.confirmPassword.getText();
 
-            // TODO: Handle conform password
-            if(!strPassword.equals(strConformPassword)){
-                try{
-                    showDialog(rootPane, "Register", "Conform password is not corrected");
-                    return;
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            if(strUsername.isEmpty() || strPassword.isEmpty()){
-                showDialog(rootPane, "Register", "There are at least one field is empty");
+        // TODO: Handle conform password
+        if(!strPassword.equals(strConformPassword)){
+            try{
+                showDialog(rootPane, "Register", "Conform password is not corrected");
                 return;
+            } catch (Exception e){
+                e.printStackTrace();
             }
-
-            new Thread(() -> {
-                UsersDao dao = new UsersDao();
-
-                // TODO: create record on database
-                Users user = new Users();
-                user.setUsername(strUsername);
-                user.setPassword(strPassword);
-                user.setUserid(1);
-
-                try{
-                    dao.insert(user);
-                    Platform.runLater(() -> {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginSceneTemplate.fxml"));
-                        Parent root = null;
-                        try {
-                            root = loader.load();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        assert root != null;
-                        Scene scene = new Scene(root);
-                        scene.setFill(Color.TRANSPARENT);
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(scene);
-                    });
-                } catch (Exception e){
-                    Platform.runLater(()->showDialog(this.rootPane, "Register", "Register is failed"));
-                    e.printStackTrace();
-                }
-            }).start();
         }
+
+        if(strUsername.isEmpty() || strPassword.isEmpty()){
+            showDialog(rootPane, "Register", "There are at least one field is empty");
+            return;
+        }
+
+        new Thread(() -> {
+            UsersDao dao = new UsersDao();
+
+            // TODO: create record on database
+            Users user = new Users();
+            user.setUsername(strUsername);
+            user.setPassword(strPassword);
+            user.setUserid(1);
+
+            try{
+                dao.insert(user);
+                Platform.runLater(() -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginSceneTemplate.fxml"));
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    assert root != null;
+                    Scene scene = new Scene(root);
+                    scene.setFill(Color.TRANSPARENT);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(scene);
+                });
+            } catch (Exception e){
+                Platform.runLater(()->showDialog(this.rootPane, "Register", "Register is failed"));
+                e.printStackTrace();
+            }
+        }).start();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
