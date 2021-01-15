@@ -2,97 +2,72 @@ package ui.scene;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Transition;
-import javafx.application.Platform;
+import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import ui.tool.ConvertUtil;
+import ui.Main;
 import ui.viewmodel.*;
-import static ui.tool.SceneUtils.*;
+import ui.tool.SceneUtils;
 import dao.%table%Dao;
 import entity.%table%;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.net.URL;
 import java.util.ResourceBundle;
-
-public class %table%Scene implements Initializable {
+import static ui.Main.*;
+public class %table%Scene extends BaseSceneTemplate implements Initializable {
     @FXML
-    JFXTreeTableView table;
+    private JFXTreeTableView<%table%ViewModel> table;
     @FXML
-    BorderPane mainContent;
+    private VBox fieldContainer;
     @FXML
-    VBox centerPane;
-    @FXML
-    ScrollPane scrollPane;
-    @FXML
-    VBox fieldContainer;
+    private JFXListView tableList;
 
     %annotationFXML%
 
+    //@FXML
+    //StackPane rootPane;
     @FXML
-    StackPane rootPane;
+    private JFXButton deleteButton;
     @FXML
-    JFXButton deleteButton;
-    @FXML
-    VBox rightPane;
+    private VBox rightPane;
     @FXML
     JFXButton addButton;
     @FXML
     JFXButton approveButton;
     @FXML
-    JFXButton settingButton;
+    private JFXButton searchButton;
     @FXML
-    JFXButton searchButton;
+    private JFXButton settingButton;
+    @FXML
+    private ImageView profilePicture;
 
-    private ObservableList<%table%ViewModel> data = FXCollections.observableArrayList();
     private List<%table%> list;
+
+    private final ObservableList<%table%ViewModel> data = FXCollections.observableArrayList();
+
+    private final ContextMenu contextMenu = new ContextMenu();
 
     boolean isUpdate = true;
 
-    // Custom status bar
-    private double x, y;
-
-    public void handleDragged(MouseEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setX(event.getScreenX() - 6 - x);
-        stage.setY(event.getScreenY() - 6 - y);
-    }
-
-    public void handlePressed(MouseEvent event) {
-        x = event.getX();
-        y = event.getY();
-    }
-
-  public void handleMousePressed(MouseEvent event) {
+    // Handle select table
+    @FXML
+    private void handleMousePressed() {
         int index = this.table.getSelectionModel().getSelectedIndex();
 
         %getFieldOfData%
@@ -105,58 +80,32 @@ public class %table%Scene implements Initializable {
         }
     }
 
-    public void handleReleased(MouseEvent event) {
+    @FXML
+    private void deleteRow(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        if (stage.getY() < 0) {
-            stage.setY(0);
-        }
-    }
-
-    public void close(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ParallelTransition transition = getHideTransition(this.rootPane);
-        transition.play();
-        transition.setOnFinished(e->{
-            stage.close();
-        });
-    }
-
-    public void minimize(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ParallelTransition transition = getHideTransition(this.rootPane);
-        transition.play();
-        transition.setOnFinished(e->{
-        stage.setIconified(true);
-        this.rootPane.setScaleX(1.0);
-        this.rootPane.setScaleY(1.0);
-        this.rootPane.setOpacity(1.0);
-        });
-    }
-
-    public void deleteRow(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
+        boolean result = SceneUtils.getInstance().showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
              try{
                 %table%Dao dao = new %table%Dao();
                 dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 fetchData();
-                showDialog(this.rootPane, "Success", "Update database success");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Update database success");
 
                 clearFields();
                 this.rightPane.setDisable(true);
             } catch (Exception e){
-                showDialog(this.rootPane, "Success", "Add database success");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Add database success");
                 e.printStackTrace();
             }
 
         }
     }
 
-    public void addRow(ActionEvent event) {
+    @FXML
+    private void addRow() {
         this.isUpdate = false;
         this.rightPane.setDisable(false);
-        clearFields();
+        this.clearFields();
         this.deleteButton.setVisible(false);
         this.approveButton.setText("Add");
     }
@@ -183,7 +132,8 @@ public class %table%Scene implements Initializable {
         return res;
     }
 
-    public void approveModify(ActionEvent event) {
+    @FXML
+    private void approveModify() {
         // Add or update
         if (isUpdate) {
             try{
@@ -191,10 +141,10 @@ public class %table%Scene implements Initializable {
                 dao.delete(list.get(table.getSelectionModel().getSelectedIndex()));
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
-                showDialog(this.rootPane, "Success", "Edit database success");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Update database success");
                 //dao.close();
             } catch (Exception e){
-                showDialog(this.rootPane, "Failed", "Edit database failed");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Failed", "Edit database failed");
                 e.printStackTrace();
             }
         } else {
@@ -202,16 +152,23 @@ public class %table%Scene implements Initializable {
                 %table%Dao dao = new %table%Dao();
                 dao.insert(convertFromViewModelToEntity(getViewModel()));
                 fetchData();
-                showDialog(this.rootPane, "Success", "Add database success");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Add database success");
                 //dao.close();
             } catch (Exception e){
-                showDialog(this.rootPane, "Failed", "Add database failed");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Failed", "Add database failed");
                 e.printStackTrace();
             }
         }
     }
 
     %switchFunction%
+
+    @FXML
+    private void showContextMenu(MouseEvent event) {
+        if (!this.contextMenu.isShowing()) {
+            this.contextMenu.show(this.profilePicture, event.getScreenX(), event.getScreenY());
+        }
+    }
 
     private void fetchData() {
         data.removeAll(data);
@@ -229,6 +186,15 @@ public class %table%Scene implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        this.tableList.getSelectionModel().select(Main.getCurrentTab());
+        this.tableList.getFocusModel().focus(Main.getCurrentTab());
+
+        // Init context menu
+        MenuItem logout = new MenuItem("Logout");
+        logout.setOnAction(this::logOut);
+        this.contextMenu.getItems().add(logout);
+
         fetchData();
         this.rootPane.setCache(true);
 
@@ -248,5 +214,9 @@ public class %table%Scene implements Initializable {
         if (this.table.getSelectionModel().getSelectedIndex() == -1) {
             this.rightPane.setDisable(true);
         }
+    }
+
+    private void logOut(ActionEvent event) {
+        SceneUtils.getInstance().switchScreen(this.rootPane, LOGIN_SCENE_FXML, 100);
     }
 }

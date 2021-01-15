@@ -2,24 +2,30 @@ package ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-
 public class Main extends Application {
+    public static final String LOGIN_SCENE_FXML = "/fxml/LoginSceneTemplate.fxml";
+    public static final String REGISTER_SCENE_FXML = "/fxml/RegisterSceneTemplate.fxml";
+
+    private static int currentTab = 0;
+
+    public static void setCurrentTab(int currentTab) {
+        Main.currentTab = currentTab;
+    }
+
+    public static int getCurrentTab() {
+        return Main.currentTab;
+    }
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginSceneTemplate.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource(LOGIN_SCENE_FXML));
         primaryStage.setTitle("CRUD Framework version 1.0");
         primaryStage.centerOnScreen();
         Scene scene = new Scene(root);

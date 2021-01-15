@@ -1,6 +1,7 @@
 package ui.generator;
 
 import generator.Generatable;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import ui.ToolUtils;
 
@@ -46,34 +47,18 @@ public class SceneGenerator implements Generatable {
             e.printStackTrace();
         }
 
-
+        final int[] iCount = {0};
         String switchFunction = listTable
                 .stream()
-                .map(table ->
-                        "public void switch_"+table+"_Scene(MouseEvent event) {\n" +
-                                "    new Thread(()->{\n" +
-                                "        try {\n" +
-                                "            Thread.sleep(150);\n" +
-                                "        } catch (InterruptedException e) {\n" +
-                                "            e.printStackTrace();\n" +
-                                "        }\n" +
-                                "        Platform.runLater(() -> {\n" +
-                                "            System.out.println(\"Switch to "+table+"\");\n" +
-                                "            FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/fxml/"+table.toLowerCase()+"Scene.fxml\"));\n" +
-                                "            Parent root = null;\n" +
-                                "            try {\n" +
-                                "                root = loader.load();\n" +
-                                "            } catch (IOException e) {\n" +
-                                "                e.printStackTrace();\n" +
-                                "            }\n" +
-                                "            assert root != null;" +
-                                "            Scene scene = new Scene(Objects.requireNonNull(root));\n" +
-                                "            scene.setFill(Color.TRANSPARENT);\n" +
-                                "            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();\n" +
-                                "            stage.setScene(scene);\n" +
-                                "        });\n" +
-                                "       }).start();\n" +
-                                "   }\n\n\t"
+                .map(table ->{
+                            iCount[0]++;
+                            return "@FXML\n" +
+                                    "private void switch_"+table+"_Scene(MouseEvent event) {\n" +
+                                    "Main.setCurrentTab("+ iCount[0] +");\n" +
+                                "   SceneUtils.getInstance().switchScreen(this.rootPane, \"/fxml/"+table.toLowerCase()+"Scene.fxml\", 100);\n" +
+                                "   }\n\n\t";
+                        }
+
                 )
                 .reduce("", (a, b) -> a + b);
 
@@ -147,6 +132,7 @@ public class SceneGenerator implements Generatable {
 
 
         try {
+
             FileWriter myWriter = new FileWriter(directory);
             myWriter.write(finalPersistenceContent);
             myWriter.close();

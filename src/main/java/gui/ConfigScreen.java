@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.commons.io.FileUtils;
 import orm.column.Column;
 import orm.SqlDatabase;
 import orm.SqlServer;
@@ -95,10 +96,14 @@ public class ConfigScreen implements Initializable {
                 new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene").mkdir();
                 new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel").mkdir();
                 new File(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\tool").mkdir();
-                System.out.println(fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\viewmodel");
                 new ResGenerator().generate(fileDest);
                 new ToolGenerator().generate(fileDest);
                 new MemberGenerator(sqlDatabase.tableList.get(0).getClassName().toLowerCase()).generate(fileDest);
+
+                File base = new File("src\\main\\template\\ui\\BaseSceneTemplate.java");
+                File targetBase = new File(( fileDest.getAbsolutePath() + "\\src\\main\\java\\ui\\scene\\BaseSceneTemplate.java"));
+                targetBase.createNewFile();
+                FileUtils.copyFile(base, targetBase);
 
                 List<String> listTableName =
                         sqlDatabase.tableList.stream().map(Table::getClassName).collect(Collectors.toList());
@@ -132,6 +137,7 @@ public class ConfigScreen implements Initializable {
                 Platform.runLater(()->SceneUtils.getInstance().showDialog(this.root, "Success", "Your project is generated successfully!"));
             } catch (Exception e) {
                 Platform.runLater(()->SceneUtils.getInstance().showDialog(this.root, "Failed", e.getMessage()));
+                e.printStackTrace();
             } finally {
                 this.generateButton.setDisable(false);
                 spinner.managedProperty().bind(spinner.visibleProperty());

@@ -78,7 +78,7 @@
                                         <Insets right="20.0" />
                                     </HBox.margin>
                                 </JFXButton>
-                                <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="profilePicture" fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#showContextMenu">
                                     <image>
                                         <Image url="@../images/profile-picture.png" />
                                     </image>
@@ -116,7 +116,7 @@
                                         <Font name="System Bold" size="12.0" />
                                     </font>
                                 </Label>
-                                <JFXListView prefHeight="664.0" prefWidth="176.0" >
+                                <JFXListView fx:id="tableList" prefHeight="664.0" prefWidth="176.0" >
                                     %listTable%
                                 </JFXListView>
                             </children>
