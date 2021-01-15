@@ -10,31 +10,31 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" fx:controller="gui.ConfigScreen" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ConfigScreen">
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #006A8B, #39BBAC);">
          <children>
             <AnchorPane fx:id="pneCenter" layoutX="400.0" layoutY="202.0" prefHeight="365.0" prefWidth="480.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #ffffff; -fx-background-radius: 10;">
                <children>
-                  <Label layoutX="187.0" layoutY="34.0" text="Cấu hình" textAlignment="CENTER" textFill="#525252">
+                  <Label layoutX="161.0" layoutY="35.0" text="Configuration" textAlignment="CENTER" textFill="#525252">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="generateButton" buttonType="RAISED" layoutX="40.0" layoutY="270.0" onAction="#generate" prefHeight="36.0" prefWidth="400.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Xây dựng" textAlignment="CENTER">
+                  <JFXButton fx:id="generateButton" buttonType="RAISED" defaultButton="true" layoutX="40.0" layoutY="270.0" onAction="#generate" prefHeight="36.0" prefWidth="400.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Generate" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXComboBox fx:id="databaseComboBox" focusColor="#006a8b" layoutX="37.0" layoutY="102.0" prefHeight="38.0" prefWidth="400.0" promptText="Chọn database" />
+                  <JFXComboBox fx:id="databaseComboBox" focusColor="#006a8b" layoutX="37.0" layoutY="102.0" prefHeight="38.0" prefWidth="400.0" promptText="Choose database" />
                   <HBox layoutX="37.0" layoutY="181.0" prefWidth="400.0">
                      <children>
-                        <JFXTextField fx:id="destinationInput" focusColor="#006a8b" labelFloat="true" prefHeight="38.0" prefWidth="334.0" promptText="Nơi lưu trữ">
+                        <JFXTextField fx:id="destinationInput" focusColor="#006a8b" labelFloat="true" prefHeight="38.0" prefWidth="334.0" promptText="Stored location">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </JFXTextField>
-                        <JFXButton fx:id="browseButton" buttonType="RAISED" onAction="#chooseFolder" prefHeight="38.0" prefWidth="65.0" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="Chọn..." />
+                        <JFXButton fx:id="browseButton" buttonType="RAISED" onAction="#chooseFolder" prefHeight="38.0" prefWidth="88.0" style="-fx-background-color: #006A8B; -fx-text-fill: #ffffff;" text="Select..." />
                      </children>
                   </HBox>
                </children>

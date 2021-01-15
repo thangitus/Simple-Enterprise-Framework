@@ -67,7 +67,12 @@
                               <Font size="14.0" />
                            </font>
                         </JFXPasswordField>
-                        <JFXButton fx:id="registerButton" buttonType="RAISED" layoutX="42.0" layoutY="326.0" onAction="#register" prefHeight="36.0" prefWidth="360.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Register" textAlignment="CENTER">
+                        <JFXPasswordField fx:id="confirmPassword" focusColor="#006a8b" labelFloat="true" layoutX="42.0" layoutY="250.0" prefHeight="38.0" prefWidth="360.0" promptText="Confirm password">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <JFXButton fx:id="registerButton" buttonType="RAISED" defaultButton="true" layoutX="42.0" layoutY="326.0" onAction="#register" prefHeight="36.0" prefWidth="360.0" style="-fx-background-color: #006A8B; -fx-text-fill: #FFFFFF;" text="Register" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -77,11 +82,6 @@
                               <Font size="14.0" />
                            </font>
                         </JFXButton>
-                        <JFXPasswordField fx:id="confirmPassword" focusColor="#006a8b" labelFloat="true" layoutX="42.0" layoutY="250.0" prefHeight="38.0" prefWidth="360.0" promptText="Confirm password">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </JFXPasswordField>
                      </children>
                   </AnchorPane>
                </children>

@@ -69,6 +69,7 @@ public class SceneUtils  {
 
         JFXDialog dialog = new JFXDialog(rootPane, layout, JFXDialog.DialogTransition.CENTER);
 
+        okButton.setDefaultButton(true);
         okButton.setOnAction(e-> dialog.close());
 
         dialog.show();
