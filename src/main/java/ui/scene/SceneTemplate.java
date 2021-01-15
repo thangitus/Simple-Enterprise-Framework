@@ -2,6 +2,10 @@ package ui.scene;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,16 +16,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.viewmodel.ViewModelTemplate;
 
 import java.io.IOException;
@@ -30,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static ui.scene.SceneUtils.*;
 
 public class SceneTemplate implements Initializable {
     @FXML
@@ -59,6 +69,10 @@ public class SceneTemplate implements Initializable {
     JFXButton addButton;
     @FXML
     JFXButton approveButton;
+    @FXML
+    JFXButton settingButton;
+    @FXML
+    JFXButton searchButton;
 
     private ObservableList<ViewModelTemplate> data = FXCollections.observableArrayList();
 
@@ -101,65 +115,29 @@ public class SceneTemplate implements Initializable {
 
     public void close(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        ParallelTransition transition = getHideTransition(this.rootPane);
+        transition.play();
+        transition.setOnFinished(e->{
+            stage.close();
+        });
     }
 
     public void minimize(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setIconified(true);
-    }
-
-    public boolean showConfirm(Stage stage, String title, String message) {
-        JFXAlert<String> alert = new JFXAlert<>(stage);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.setOverlayClose(false);
-
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text(title));
-        layout.setBody(new Text(message));
-
-        JFXButton okButton = new JFXButton("OK");
-        okButton.setDefaultButton(true);
-        okButton.setOnAction(addEvent -> {
-            alert.setResult("OK");
-            alert.hideWithAnimation();
+        ParallelTransition transition = getHideTransition(this.rootPane);
+        transition.play();
+        transition.setOnFinished(e->{
+            stage.setIconified(true);
+            this.rootPane.setScaleX(1.0);
+            this.rootPane.setScaleY(1.0);
+            this.rootPane.setOpacity(1.0);
         });
-
-        JFXButton cancelButton = new JFXButton("CANCEL");
-        cancelButton.setCancelButton(true);
-        cancelButton.setOnAction(closeEvent -> alert.hideWithAnimation());
-
-        layout.setActions(okButton, cancelButton);
-        alert.setContent(layout);
-
-        Optional<String> result = alert.showAndWait();
-        if (result.isPresent()){
-            if (result.get().equals("OK"))
-                return true;
-        }
-        return false;
-    }
-
-    public void showDialog(String title, String message) {
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text(title));
-        layout.setBody(new Text(message));
-
-        JFXButton okButton = new JFXButton("OK");
-        layout.setActions(okButton);
-
-        JFXDialog dialog = new JFXDialog(this.rootPane, layout, JFXDialog.DialogTransition.CENTER);
-
-        okButton.setOnAction(e-> dialog.close());
-
-        dialog.show();
     }
 
     public void deleteRow(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         boolean result = showConfirm(stage, "Confirmation", "Are you sure to delete this row?");
         if (result) {
-            // delete
             clearFields();
             this.rightPane.setDisable(true);
         }
@@ -185,91 +163,84 @@ public class SceneTemplate implements Initializable {
         // Add or update
         if (isUpdate) {
             // update database
-            showDialog("Success", "Update database success");
+            showDialog(this.rootPane, "Success", "Update database success");
         } else {
             // add database
-            showDialog("Success", "Add database success");
+            showDialog(this.rootPane, "Success", "Add database success");
         }
     }
 
     public void switchScene1(MouseEvent event) {
         new Thread(() -> {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Platform.runLater(() -> {
                 System.out.println("Switch to scene 1");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
                 Parent root = null;
                 try {
                     root = loader.load();
-                    Node newTable = root.lookup("#table");
-                    ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-                    VBox container = (VBox) scrollPane.getContent();
-                    this.centerPane.getChildren().remove(1);
-                    this.centerPane.getChildren().add(newTable);
-                    this.table = (JFXTreeTableView) newTable;
-                    this.table.setOnMousePressed(this::handleMousePressed);
-                    this.fieldContainer.getChildren().remove(0, this.table.getColumns().size());
-                    this.fieldContainer.getChildren().addAll(container.getChildren());
-                    this.name = (JFXTextField) this.fieldContainer.lookup("#name");
-                    this.classroom = (JFXTextField) this.fieldContainer.lookup("#classroom");
-                    this.id = (JFXTextField) this.fieldContainer.lookup("#id");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                assert root != null;
+                Scene scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
             });
         }).start();
     }
 
     public void switchScene2(MouseEvent event) {
         new Thread(() -> {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Platform.runLater(() -> {
                 System.out.println("Switch to scene 1");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
                 Parent root = null;
                 try {
                     root = loader.load();
-                    Node newTable = root.lookup("#table");
-                    ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-                    VBox container = (VBox) scrollPane.getContent();
-                    this.centerPane.getChildren().remove(1);
-                    this.centerPane.getChildren().add(newTable);
-                    this.table = (JFXTreeTableView) newTable;
-                    this.table.setOnMousePressed(this::handleMousePressed);
-                    this.fieldContainer.getChildren().remove(0, this.table.getColumns().size());
-                    this.fieldContainer.getChildren().addAll(container.getChildren());
-                    this.name = (JFXTextField) this.fieldContainer.lookup("#name");
-                    this.classroom = (JFXTextField) this.fieldContainer.lookup("#classroom");
-                    this.id = (JFXTextField) this.fieldContainer.lookup("#id");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                assert root != null;
+                Scene scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
             });
         }).start();
     }
 
     public void switchScene3(MouseEvent event) {
         new Thread(() -> {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Platform.runLater(() -> {
                 System.out.println("Switch to scene 1");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SceneTemplate.fxml"));
                 Parent root = null;
                 try {
                     root = loader.load();
-                    Node newTable = root.lookup("#table");
-                    ScrollPane scrollPane = (ScrollPane) root.lookup("#scrollPane");
-                    VBox container = (VBox) scrollPane.getContent();
-                    this.centerPane.getChildren().remove(1);
-                    this.centerPane.getChildren().add(newTable);
-                    this.table = (JFXTreeTableView) newTable;
-                    this.table.setOnMousePressed(this::handleMousePressed);
-                    this.fieldContainer.getChildren().remove(0, this.table.getColumns().size());
-                    this.fieldContainer.getChildren().addAll(container.getChildren());
-
-                    this.name = (JFXTextField) this.fieldContainer.lookup("#name");
-                    this.classroom = (JFXTextField) this.fieldContainer.lookup("#classroom");
-                    this.id = (JFXTextField) this.fieldContainer.lookup("#id");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                assert root != null;
+                Scene scene = new Scene(root);
+                scene.setFill(Color.TRANSPARENT);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
             });
         }).start();
     }
@@ -287,6 +258,12 @@ public class SceneTemplate implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initData();
+        this.rootPane.setCache(true);
+
+        this.deleteButton.setGraphic(new ImageView("/images/delete.png"));
+        this.searchButton.setGraphic(new ImageView("/images/search.png"));
+        this.settingButton.setGraphic(new ImageView("/images/settings.png"));
+        this.addButton.setGraphic(new ImageView("/images/add.png"));
 
         TreeTableColumn<ViewModelTemplate, String> col1 = new JFXTreeTableColumn<>("Column 1");
         col1.setSortable(false);
