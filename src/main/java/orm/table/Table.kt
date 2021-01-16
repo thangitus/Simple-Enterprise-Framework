@@ -105,7 +105,7 @@ class Table() : Generatable {
             if (it.isPrimaryKey)
                 return it.getSimpleClassName()
         }
-        return ""
+        return "String"
     }
 
     fun addToDatabase(database: SqlDatabase): Boolean {
