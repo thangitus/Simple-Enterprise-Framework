@@ -3,6 +3,7 @@ package ui.scene;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,7 +95,7 @@ public class %table%Scene extends BaseSceneTemplate implements Initializable {
                 clearFields();
                 this.rightPane.setDisable(true);
             } catch (Exception e){
-                SceneUtils.getInstance().showDialog(this.rootPane, "Success", "Add database success");
+                SceneUtils.getInstance().showDialog(this.rootPane, "Failed", "Delete database failed");
                 e.printStackTrace();
             }
 
@@ -177,8 +178,10 @@ public class %table%Scene extends BaseSceneTemplate implements Initializable {
                     list = dao.getAll();
 
                     for (%table% model : list) {
-                        data.add(new %table%ViewModel(
-                        %getField%));
+                        Platform.runLater(()->
+                            data.add(new %table%ViewModel(
+                                %getField%))
+                        );
                     }
                    //dao.close();
         }).start();
