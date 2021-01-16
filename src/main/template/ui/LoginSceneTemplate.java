@@ -75,6 +75,6 @@ public class LoginSceneTemplate extends BaseSceneTemplate implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Platform.runLater(()->username.requestFocus());
     }
 }

@@ -86,6 +86,6 @@ public class RegisterSceneTemplate extends BaseSceneTemplate implements Initiali
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Platform.runLater(()->username.requestFocus());
     }
 }

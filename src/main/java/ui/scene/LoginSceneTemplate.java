@@ -3,6 +3,7 @@ package ui.scene;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
@@ -38,6 +39,6 @@ public class LoginSceneTemplate extends BaseSceneTemplate implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        Platform.runLater(()->username.requestFocus());
     }
 }

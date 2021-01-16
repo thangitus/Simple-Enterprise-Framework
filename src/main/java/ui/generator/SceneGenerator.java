@@ -47,7 +47,7 @@ public class SceneGenerator implements Generatable {
             e.printStackTrace();
         }
 
-        final int[] iCount = {0};
+        final int[] iCount = {-1};
         String switchFunction = listTable
                 .stream()
                 .map(table ->{

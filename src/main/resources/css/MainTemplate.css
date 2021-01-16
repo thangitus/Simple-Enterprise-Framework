@@ -166,3 +166,12 @@
     -fx-background-radius: 100;
     -fx-border-radius: 100;
 }
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #006A8B;
+    -fx-text-fill: #ffffff;
+}
+
+.list-cell:filled:selected:focused .label, .list-cell:filled:selected .label{
+    -fx-text-fill: #ffffff;
+}
